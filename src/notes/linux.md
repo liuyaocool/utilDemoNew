@@ -1,3 +1,10 @@
+# 内核
+
+- XX.YY.ZZ --版本 如 2.5.7
+  - XX: 主版本号
+  - YY: 奇数表示开发板,偶数表示稳定版
+  - ZZ: 升级次数
+
 # 公钥私钥免密登录
 
 - 1 客户机执行命令 ssh-keygen -t rsa -P "",  一路回车
@@ -17,6 +24,44 @@
   - deepin  --国产
   - 麒麟  --国产
 - SuSe Linux (Novell公司产品, 欧洲常用)
+
+# 语言包
+
+yum makcache 出现 Failed to set locale, defaulting to C.UTF-8 错误
+
+- locale -a    --查看安装的语言
+
+  ​	locale: Cannot set LC_CTYPE to default locale: No such file or directory
+  ​	locale: Cannot set LC_MESSAGES to default locale: No such file or directory
+  ​	locale: Cannot set LC_ALL to default locale: No such file or directory
+
+  ​	。。。
+
+  ​	可知没有安装en_US.UTF-8语言
+
+- 语言包安装
+
+  - dnf install glibc-langpack-en -y
+  - 或 dnf install langpacks-en glibc-all-langpacks -y
+  - 再查看可知语言安装成功
+
+- 若已安装但还报错
+
+  - echo "export LC_ALL=en_US.UTF-8"  >>  /etc/profile 
+  - echo "export LC_CTYPE=en_US.UTF-8"  >>  /etc/profile 
+  - source /etc/profile
+
+- 安装中文语言包
+
+  - yum install glibc-langpack-zh
+
+# 配置镜像
+
+yum install 报错 failed to download metadata for repo 'AppStream'
+
+## CentOS
+
+- https://developer.aliyun.com/mirror/
 
 # 网络
 
@@ -58,7 +103,22 @@
 
 终端输入 → shell → 调用内核
 
+# 常用软件
+
+- make：yum -y install gcc automake autoconf libtool make
+- gcc： yun install gcc
+- wget：yum install wget    --可下载网络资源
+
 # 常用功能
+
+## 配置环境变量
+
+- vi /etc/profile
+- 末尾追加
+  - export REDIS_HOME=/opt/soft/redis6
+  - export PATH=$PATH:$REDIS_HOME/bin
+- source /etc/profile    --使配置生效
+- echo $PATH    --查看path
 
 ## 编译 安装
 
@@ -74,7 +134,10 @@
 
 - 系统：
   - redhat系列：cat /etc/redhat-release
-- 内核：cat /proc/version
+- 内核：
+  - cat /proc/version
+  - uname -r    --显示内核版本
+    - -a    --显示主机名 内核版本 硬件平台等
 
 
 # 脚本示例
