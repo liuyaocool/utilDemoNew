@@ -1,6 +1,7 @@
 # 公钥私钥免密登录
 
 - 1 客户机执行命令 ssh-keygen -t rsa -P "",  一路回车
+  - 会在 ~/.ssh 中生成一对密钥
 - 2 客户机执行命令ssh-copy-id 用户名@ip, 输入密码
 - 3 ssh免密登录即可
 
@@ -57,6 +58,23 @@
 
 终端输入 → shell → 调用内核
 
+# 常用功能
+
+## 编译 安装
+
+- 编译：make all  （ 一般源码根目录下执行）
+- 安装：make install prefix=/opt/xxx  （源码根路径下执行）
+
+## 压缩
+
+- 解压：tar xf xxx.tar.gz
+- 压缩：tar -zcvf ***.tar.gz /folder
+
+## 查看系统版本
+
+- 系统：
+  - redhat系列：cat /etc/redhat-release
+- 内核：cat /proc/version
 
 
 # 脚本示例
