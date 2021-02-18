@@ -1,0 +1,6 @@
+如果想要实现运行jar，并且不出现cmd窗口，创建一个 .vbe的文件，写入一下代码
+set ws = wscript.createobject(“wscript.shell”)
+ws.run “xxx.jar”,0
+
+打开新窗口
+start cmd /k "JConsole"

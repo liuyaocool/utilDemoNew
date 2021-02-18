@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>SharedWorker</title>
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+
+<input type="button" id="sendWork" value="sdwk">
+<p></p>
+
+<pre>
+
+共享线程--SharedWorker接口
+    实现了AbstractWorker接口
+    SharedWorker()
+    port属性
+    onerror属性
+
+
+通用子线程控制接口--WorkerGlobalScope接口
+    继承实现了WorkerUtils接口的属性和方法
+    self  //表示WorkerGlobalScope本身 例Worker
+    location  //返回WorkerLocation对象 （保存一系列js文件信息） 例SharedWorker
+        href //js绝对路径
+        protocol //js传送的协议
+        host //
+    close() //终止子线程的执行 主流浏览器实现差异大 例SharedWorker
+    onerror //
+    onoffline
+    ononlie
+    importScripts(n个js脚本绝对路经) //WorkerUtils中继承 在子线程中导入js脚本 支持跨域操作 例Worker
+    navigator //Navigator接口 测试与浏览器有关的信息
+        onLine
+        appName
+        appVersion
+        platform
+        userAgent
+
+
+专用子线程接口--DedicatedWorkerGlobalScope接口
+    postMessage(消息体，转移序列)  //从一个消息端口向另一个传递数据 第二个参数目前无实际意义
+    onmessage  //表示当主线程消息端口向专用线程消息端口传递数据时触发 与Worker接口属性类似
+
+
+共享子线程接口--SharedWorkerGlobalScope接口  可以实现多个网页通信
+    name //标识名
+    applicationCache //ApplicationCache对象
+    onconnect //建立连接
+</pre>
+
+<script src="../../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+    var work;
+    var worker;
+    $(function () {
+
+        if (typeof(SharedWorker)) {
+            /**
+             * 实例化PortMessage对象，
+             * 可以通过实例化后的SharedWorker对象的属性进行访问
+             * （文件，标识名）
+             * 可以被多个页面访问 多个关联页面都关闭才会关闭
+             */
+            work = new SharedWorker("../../../static/js/h5/worker/sharedworker.js", "mySharedWorker");
+            //port 即实例化对象，表示主线程中的消息端口 子线程的一个消息端口
+            worker = work.port;
+            worker.start();//初始化主线程消息端口，
+            // 若要使用此方法监听onmessage事件，就必须在之前调用start()方法
+            worker.addEventListener("message",getMessage, false);
+            // worker.addEventListener("error",errorMsg, false);
+
+            $("#sendWork").click(sendWork);
+
+            // worker.port.onmessage = function(ev){
+            //     $("p").append("<br/>传回的数据:" + ev.data);
+            // };
+            // console.log(SharedWorker);
+            console.log("支持共享线程")
+        }else {
+            console.log("不支持共享worker")
+        }
+    });
+
+    function sendWork(ev) {
+        console.log("send");
+        console.log(worker);
+        worker.postMessage({
+            a:"a",
+            b:"b",
+            c:"c"
+        });
+    }
+    
+    function getMessage(ev) {
+        $("p").append("<br/>传回的数据:" + ev.data);
+    }
+
+    function errorMsg(ev) {
+        $("p").text("异常信息：" + ev.data);
+        $("p").append("<br/>异常行号：" + ev.lineno);
+        $("p").append("<br/>异常文件：" + ev.filename);
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>基础控件</title>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+    </style>
+</head>
+
+<body>
+<textarea id="text"></textarea>
+<input id="button" type="button" value="ajax请求" onclick="doAjax()">
+<script src="../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    document.onload = function(e){
+        debugger
+    }
+    document.getElementById("button").onclick = function(e){
+        $.get(document.getElementById("text").value, function (res) {
+            console.log(res);
+        })
+    }
+    console.log(window.location.search)
+
+    /*
+    //
+    //                       _oo0oo_
+    //                      o8888888o
+    //                      88" . "88
+    //                      (| -_- |)
+    //                      0\  =  /0
+    //                    ___/`---'\___
+    //                  .' \\|     |// '.
+    //                 / \\|||  :  |||// \
+    //                / _||||| -:- |||||- \
+    //               |   | \\\  -  /// |   |
+    //               | \_|  ''\---/''  |_/ |
+    //               \  .-\__  '-'  ___/-. /
+    //             ___'. .'  /--.--\  `. .'___
+    //          ."" '<  `.___\_<|>_/___.' >' "".
+    //         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+    //         \  \ `_.   \_ __\ /__ _/   .-` /  /
+    //     =====`-.____`.___ \_____/___.-`___.-'=====
+    //                       `=---='
+    //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //
+    //               佛祖保佑         永无BUG
+    //
+    //
+    */
+
+</script>
+</body>
+
+</html>

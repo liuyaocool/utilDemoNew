@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+
+        html,body{height: 100%; margin: 0px}
+
+        .main{
+            width: 100%;
+            height: 100%;
+            background: rosybrown;
+        }
+
+        .showTips{
+            border: 1px solid black;
+            position: absolute;
+            background-color: lightyellow;
+            border-radius: 5px;
+            padding: 9px;
+            font-size: 15px;
+            display: none;
+            transition: all 0.1s;
+            z-index:9999999;"
+        }
+
+    </style>
+
+</head>
+<body style="width: 9000px;">
+
+<div class="main">sdfghjklKJGKJGHKJHJKHGKJGJH</div>
+
+<div class="showTips"></div>
+
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $(".main").mouseout(function () {
+            $(".showTips").hide();
+        }).mousemove(showTips);
+    })
+
+    //小窗口展示
+    function showTips(ev) {
+        // console.log(window.event.clientX);//鼠标关于浏览器定位
+        // console.log(window.event.layerX);//鼠标关于上一级元素位置
+        // console.log(window.event.pageX);//鼠标关于body元素位置
+        var content = $(this).text();
+        $(".showTips").html(content).show();
+        var X = ev.pageX;
+        var Y = ev.pageY;
+        var wdHeight = $(window).height();
+        var wdWidth = $(window).width();
+        var tipHeight = $(".showTips").height();
+        var tipWidth = $(".showTips").width();
+
+        var size = 20;
+        //判断是需要减去未被计算出来的div宽高，如padding border
+        // 或使用嵌套div即可获得真是宽度
+        if (wdHeight-Y-size-20 < tipHeight){
+            $(".showTips").css("top", "");
+            $(".showTips").css("bottom", wdHeight-Y+size);
+        }else {
+            $(".showTips").css("bottom", "");
+            $(".showTips").css("top", Y+size);
+        }
+        if (wdWidth-X-size-20 < tipWidth){
+            $(".showTips").css("left", "");
+            $(".showTips").css("right", wdWidth-X+size);
+        }else {
+            $(".showTips").css("right", "");
+            $(".showTips").css("left", X+size);
+        }
+    }
+
+</script>
+</body>
+</html>

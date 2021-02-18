@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>基础控件</title>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id = "cavas" height="232">
+    您的浏览器不支持canvas标签！
+</canvas>
+
+<script type="text/javascript">
+
+    /*
+    //
+    //                       _oo0oo_
+    //                      o8888888o
+    //                      88" . "88
+    //                      (| -_- |)
+    //                      0\  =  /0
+    //                    ___/`---'\___
+    //                  .' \\|     |// '.
+    //                 / \\|||  :  |||// \
+    //                / _||||| -:- |||||- \
+    //               |   | \\\  -  /// |   |
+    //               | \_|  ''\---/''  |_/ |
+    //               \  .-\__  '-'  ___/-. /
+    //             ___'. .'  /--.--\  `. .'___
+    //          ."" '<  `.___\_<|>_/___.' >' "".
+    //         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+    //         \  \ `_.   \_ __\ /__ _/   .-` /  /
+    //     =====`-.____`.___ \_____/___.-`___.-'=====
+    //                       `=---='
+    //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //
+    //               佛祖保佑         永无BUG
+    //
+    //
+    */
+
+    drowArc();
+    function drowArc() {
+        var canvas = document.getElementById("cavas"),
+            percent = 0.8,
+            ctx = canvas.getContext("2d"),
+            circleValue = {
+                x : 150,
+                y : 120,
+                radius : 86,
+                startAngle : 0,
+                endAngle : 2 * Math.PI,
+                anticlockwise : false
+            };
+
+        //打底 圆环 绘制
+        ctx.lineWidth = 11;
+        ctx.beginPath();
+        var grd = ctx.createRadialGradient(circleValue.x, circleValue.y, 72, circleValue.x, circleValue.y, 93);
+        grd.addColorStop(0, "#e9eae9");
+        grd.addColorStop("0.8", "#fefefe");
+        grd.addColorStop("1", "#e9eae9");
+        ctx.strokeStyle = grd;
+        ctx.arc(circleValue.x, circleValue.y, circleValue.radius, circleValue.startAngle, circleValue.endAngle, circleValue.anticlockwise);
+        ctx.closePath();
+        ctx.stroke();
+
+        //展示进度圆环绘制
+        ctx.lineWidth = 11;
+        ctx.beginPath();
+        var linear = ctx.createLinearGradient(100, 100, 200, 100);
+        linear.addColorStop(0, '#ffc26b');
+        linear.addColorStop(0.5, '#ff9a5f');
+        linear.addColorStop(1, '#ff8157');
+        ctx.strokeStyle = linear;
+        ctx.arc(circleValue.x, circleValue.y, circleValue.radius, circleValue.startAngle, circleValue.endAngle * percent, circleValue.anticlockwise);
+        ctx.stroke();
+
+        //进度起点圆角
+        ctx.beginPath();
+        ctx.fillStyle = '#ff8157';
+        ctx.arc(circleValue.x + circleValue.radius, circleValue.y - 1, 5.5, circleValue.startAngle, circleValue.endAngle, circleValue.anticlockwise);
+        ctx.closePath();
+        ctx.fill();
+
+        //终点圆角
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = '#ff7854';
+        ctx.fillStyle = '#ff7854';
+        ctx.strokeStyle = '#fff';
+        //计算终点的坐标
+        var getX = circleValue.x + circleValue.radius * Math.cos(2 * percent * Math.PI),
+            getY = circleValue.y + circleValue.radius * Math.sin(2 * percent * Math.PI);
+        ctx.arc(getX, getY, 9, circleValue.startAngle, circleValue.endAngle, circleValue.anticlockwise);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    (function () {
+        var canvas = document.createElement("canvas");
+        canvas.width = 200;
+        canvas.height = 200;
+        document.getElementsByTagName("body")[0].append(canvas);
+        var ctx = canvas.getContext("2d");
+
+        ctx.arc(100, 100, 50, 0, Math.PI * 2, false);
+
+        //创建一个表示放射性颜色渐变的CanvasGradient对象
+        //该对象的作用域是以(100,100)为圆心、半径为10px的内圆和以(100,100)为圆心、半径为50px的外圆之间的环状区域
+        var canvasGradient = ctx.createRadialGradient(100, 100, 5, 100, 100, 50);
+        //在offset为0的位置(即内圆的圆圈处)添加一个蓝色的渐变
+        canvasGradient.addColorStop(0, "rgba(0,0,255,1)");
+        //在offset为0.5的位置(环状区域从内到外放射50%的中间位置)添加一个绿色的渐变
+        // canvasGradient.addColorStop(0.5, "green");
+        //在offset为0的位置(即外圆的圆圈处)添加一个红色的渐变
+        canvasGradient.addColorStop(1, "rgba(0,0,255,0)");
+        //将fillStyle的属性值设为该CanvasGradient对象
+        ctx.fillStyle = canvasGradient;
+
+        ctx.fill();
+
+    })()
+
+</script>
+</body>
+
+</html>

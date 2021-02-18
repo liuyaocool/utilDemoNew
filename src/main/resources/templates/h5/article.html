@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+        input{position: relative;}
+        input:invalid{
+            background-color: gray;
+        }
+        input::after{
+            content: "情书";
+            background-color: #FFFFFF;
+            width: fit-content;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            position: absolute;
+            padding: 2px 5px;
+            z-index: 99;
+            right: -50px;
+            display: block;
+            /* bottom: 27px; */
+        }
+        input:valid{
+             background-color: yellow;
+         }
+    </style>
+
+</head>
+<body>
+
+<!--自成一体的内容-->
+<article>
+
+    <header>
+        <h1>标题</h1>
+    </header>
+    <p>内容</p>
+    <article>
+        <h2>标题2</h2>
+        <p>内容2</p>
+    </article>
+</article>
+
+<q>
+    文本标签
+    <cite>——《刘书》</cite>
+</q>
+
+<form style="width: fit-content" novalidate action="/system/test">
+    <fieldset>
+        <legend>比填项</legend>
+        <label>ming<input type="text"></label>
+        <label>pass<input type="password"></label>
+        email<input type="email" pattern="^[1-9]\d{5}$">
+    </fieldset>
+    <fieldset>
+        <legend>项</legend>
+        输入域：<input type="text" list="dataLi" required="required" onchange="alert(this.value)">
+        <datalist id="dataLi">
+            <option value="aaa" label="top1"></option>
+            <option value="bbb" label="top2"></option>
+            <option value="ccc" label="top3"></option>
+        </datalist>
+        <br/>
+        密钥：<keygen name="security"></keygen>
+    </fieldset>
+    <input>
+        <legend>新增项</legend>
+        number<input type="number" max="200" min="18" step="3"><br/>
+        url<input type="url" placeholder="输入url"><br/>
+        search<input type="search"><br/>
+        color<input type="color"><br/>
+        date<input type="date"><br/>
+        month<input type="month"><br/>
+        week<input type="week"><br/>
+        time<input type="time"><br/>
+        datetime-local<input type="datetime-local"><br/>
+    </fieldset>
+    <input type="submit">
+</form>
+
+<select style="width: 100px" multiple>
+    <optgroup label="制服">
+        <option value="老师">老师</option>
+        <option value="学生">学生</option>
+    </optgroup>
+    <optgroup label="帽子">
+        <option value="学生">学生</option>
+        <option value="学生">学生</option>
+    </optgroup>
+</select>
+<select style="width: 100px">
+    <optgroup label="制服">
+        <option value="老师">老师</option>
+        <option value="学生">学生</option>
+    </optgroup>
+    <optgroup label="帽子">
+        <option value="学生">学生</option>
+        <option value="学生">学生</option>
+    </optgroup>
+</select>
+
+<div style="margin: 30px;">
+
+    <form id="myForm">
+        <input type="range" id="a">
+        <input type="number" id="c">
+        <output id="result" for="a c">jfm</output>
+    </form>
+</div>
+
+<input type="file" id="file_input" webkitdirectory directory/>
+
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+        input[type=text]{
+            width: 300px;
+            height: 20px;
+            padding: 1px 3px;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+        input[type=button]{
+            margin: 30px;
+            cursor: pointer;
+        }
+        div{
+            text-align: center;
+        }
+
+        b {
+            display:block;
+        }
+        #a {
+            background:red;
+            width:100px;
+            height:35px;
+            margin:10px;
+        }
+        #b {
+            background:#666;
+            width:100px;
+            height:35px;
+            margin:10px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div>
+    <h2>重新计算保费</h2>
+    <input id="num" type="text" placeholder="在此输入保单号..."><br/>
+    <input type="button" onclick="reCalc()" value="点击重新计算">
+</div>
+
+<div id="a" class="a"><b>11</b></div>
+
+<div id="b" class="c ae"><em>22</em></div>
+
+<div style="background:#963; width:100px; height:100px;" id="oDiv">点击</div>
+
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    $(function(){
+        $("#oDiv").click(function () {
+            var a = $("#a");
+            var b = $("#b");
+            a.insertAfter(b)
+
+        });
+    })
+
+    function reCalc() {
+        var data = {num: $("#num").val.trim()}
+
+    }
+
+</script>
+</body>
+</html>

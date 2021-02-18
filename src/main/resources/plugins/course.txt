@@ -1,0 +1,25 @@
+
+安装crx插件:
+1: 打开chrome扩展程序页面,直接拖进去,失败 见 2
+2: 后缀改为.zip, 解压, chrome 扩展程序页面, 点击加载已解压的扩展程序,选中解压文件夹即可安装
+
+livereload_2_1_0_.crx
+使用:
+spring boot
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <optional>true</optional>
+        <scope>true</scope>
+    </dependency>
+yml:
+    spring:
+      thymeleaf:
+        #禁用模版缓存: chrome没有LiveReload插件
+        cache: true
+      devtools:
+        livereload:
+          enabled: true
+
+ReRes --替换加载的js文件
+    需要在详细信息中 打开"允许访问文件网址"选项

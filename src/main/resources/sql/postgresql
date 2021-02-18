@@ -1,0 +1,2 @@
+更新非空的数据
+    update "xxx" set "aaa" =  COALESCE(nullif("aaa", ''), #{value}) where id = #{id}

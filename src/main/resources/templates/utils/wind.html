@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+        .circle{
+            width: 300px;
+            height: 300px;
+            border-radius: 150px;
+            border: 1px solid red;
+            position: absolute;
+            /*background-color: aqua;*/
+        }
+        .arrow{
+            /*border: 1px solid black;*/
+            width: 105px;
+            height: 45px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            margin: auto;
+            background-image: url("../../static/img/center-deep2.png");
+            background-size: 100% 100%;
+
+            /*transition:all 0.3s ease-in-out;*/
+        }
+
+        .normalAngle{
+            width: 70px;
+            height: 100px;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            margin: auto;
+            background-size: 100% 100%;
+        }
+        .leftAngle{
+            left: 0px;
+            background-image: url("../../static/img/RIGHT-deep.png");
+        }
+        .leftAngle:hover{
+            background-image: url("../../static/img/RIGHT.png");
+        }
+        .rightAngle{
+            right: 0px;
+            background-image: url("../../static/img/RIGHT.png");
+        }
+        .rightAngle:hover{
+            background-image: url("../../static/img/RIGHT-deep.png");
+        }
+
+        a{
+            text-align:center;
+            line-height:100px;
+            transition:all 2s;
+            width:100px;
+            height:100px;
+            background:pink;
+            float:left;
+            border-radius:50%;
+        }
+        a:hover{
+            transition:all 2s;
+            background:red;
+            transform-origin:50 100;
+            transform:rotate(720deg);
+            border-radius:50%;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="circle">
+
+        <div class="arrow" onclick="resetAngle(this)" ></div>
+        <div class="leftAngle normalAngle" onclick="angleRotate(this)"></div>
+        <div class="rightAngle normalAngle" onclick="angleRotate(this)"></div>
+
+    </div>
+
+    <div style="position:absolute; top: 400px;">
+        <h1>请将鼠标移动到下面的矩形上：</h1>
+        <a>
+            两秒旋转360
+        </a>
+    </div>
+
+
+    <script type="text/javascript" src="../../static/js/jquery-1.12.2.min.js"></script>
+<script>
+
+    var angle = 30;//旋转的角度
+    function angleRotate(dom) {
+
+        var aa = 0;
+
+        try {
+            aa = eval('get' + $(".arrow").css("transform"))*1;//旋转后的角度
+        } catch (e) {console.log(e)}
+        if ($(dom).attr("class").indexOf("leftAngle") >= 0){
+            aa -= angle;
+        } else {
+            aa += angle;
+        }
+        if (aa < 0) aa += 360;
+        // setmatrix(aa,$(dom.parentNode).find("div"));
+        // if (aa > 180) aa -= 360;
+        $(".arrow").css("transform", "rotate(" + aa + "deg)");
+        $(".arrow").css("-ms-transform", "rotate(" + aa + "deg)"); // IE 9
+        $(".arrow").css("-moz-transform", "rotate(" + aa + "deg)");// Firefox
+        $(".arrow").css("-webkit-transform", "rotate(" + aa + "deg)");// Safari 和 Chrome
+        $(".arrow").css("-o-transform", "rotate(" + aa + "deg)");// Opera
+
+        if (aa != 0){
+            aa = 360 - aa;
+        } 
+        if ( aa >= 360) aa = aa - 360;
+        console.log(aa);
+        return aa;
+    }
+    function resetAngle(dom) {
+        $(dom).css("transform", "rotate(0deg)");
+        $(dom).css("-ms-transform", "rotate(0deg)"); // IE 9
+        $(dom).css("-moz-transform", "rotate(0deg)");// Firefox
+        $(dom).css("-webkit-transform", "rotate(0deg)");// Safari 和 Chrome
+        $(dom).css("-o-transform", "rotate(0deg)");// Opera
+    }
+
+    function setmatrix(angle, dom){
+        var cosVal = Math.cos(angle * Math.PI / 180),
+            sinVal = Math.sin(angle * Math.PI / 180);
+
+        var transformVal = 'matrix('+ cosVal.toFixed(6) +','+ sinVal.toFixed(6) +
+            ','+ (-1 * sinVal).toFixed(6) +','+ cosVal.toFixed(6) +',0,0)';
+
+        $(dom).css("transform", transformVal);
+        $(dom).css("-ms-transform", transformVal); // IE 9
+        $(dom).css("-moz-transform", transformVal);// Firefox
+        $(dom).css("-webkit-transform", transformVal);// Safari 和 Chrome
+        $(dom).css("-o-transform", transformVal);// Opera
+
+    }
+
+    function getmatrix(a,b,c,d,e,f) {
+        var aa = Math.round(180 * Math.asin(a) / Math.PI);
+        var bb = Math.round(180 * Math.acos(b) / Math.PI);
+        var cc = Math.round(180 * Math.asin(c) / Math.PI);
+        var dd = Math.round(180 * Math.acos(d) / Math.PI);
+        // console.log("old:"+aa+"/"+bb+"/"+cc+"/"+dd);
+
+        var deg = 0;
+        if (aa == bb || -aa == bb) {
+            deg = dd;
+        } else if (-aa + bb == 180) {
+            deg = 180 + cc;
+        } else if (aa + bb == 180) {
+            deg = 360 - cc || 360 - dd;
+        }
+        // console.log(deg);
+        return deg;
+    }
+
+    //将对象按照 与val相近 排列
+    function sortByVal(obj,val) {
+        if (typeof obj != 'object') return;
+        var arr = Object.keys(obj);
+        arr.sort(function(a,b){
+            return Math.abs(a-val)-Math.abs(b-val);
+        });
+    }
+
+    //监听时间条
+    function timeBarListener(ev) {
+
+        var oldValue = $(this).attr("oldValue")*1;
+        var newValue = ev.target.value*1;
+
+        console.log("valueChange");
+        console.log(oldValue + "/" + newValue);
+
+        var tarr = Object.keys(timeMap);
+        // var tarr = [1,115,26,37,41,59,66,73,82.333,94.111];
+
+        if (tarr.indexOf(newValue) < 0) {
+
+            tarr.sort(function(a,b){ return a-b;});
+
+            var minVal,maxVal;
+            for (var i = 0, len = tarr.length; i < len/2+1; i++) {
+                if (tarr[i] > newValue) {
+                    minVal = tarr[i - 1] == null ? tarr[i] : tarr[i-1];
+                    maxVal = tarr[i];
+                    break;
+                }
+                if (tarr[len-i-1] < newValue) {
+                    minVal = tarr[len-i-1];
+                    maxVal = tarr[len-i] == null ? tarr[len-i-1] : tarr[len-1];
+                    break;
+                }
+            }
+            if (oldValue < newValue){
+                $(this).val(maxVal);
+            } else {
+                $(this).val(minVal);
+            }
+        }
+        $("#showTimeBar").val($(this).val());
+        $(this).attr("oldValue", $(this).val());
+    }
+
+</script>
+</body>
+</html>

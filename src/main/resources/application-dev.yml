@@ -1,0 +1,23 @@
+server:
+  port: 8081
+  context-path: /myutil
+
+spring:
+  thymeleaf:
+    #禁用模版缓存: chrome没有LiveReload插件
+    cache: false
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      #热部署生效
+#      enabled: true
+      #设置重启目录
+#      additional-paths: src/main/java
+      #设置不重启目录
+#      exclude: src/main/resources/**
+
+
+config:
+  version: 0.1
+  maclistfilepath: d:/project/ywsy/ywsydev[表情]c/main/resources/config/mac.list

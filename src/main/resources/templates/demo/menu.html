@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+        .div{
+            background: greenyellow;
+            width: 200px;
+            height: 0px;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .open{
+            height: 200px;
+        }
+
+        .close{
+            height: 0px;
+        }
+
+        .span{
+            width: 188px;
+            padding: 0px 5px;
+            background-color: forestgreen;
+            display: block;
+            border: 1px solid darkgreen;
+            cursor: pointer;
+        }
+
+        .span:hover{
+            background-color: green;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div id="demo">
+    <span class="span">AAAAA</span>
+    <div class="div open">ADIV</div>
+    <span class="span">BBBBB</span>
+    <div class="div">BDIV</div>
+    <span class="span">CCCCC</span>
+    <div class="div">CDIV</div>
+</div>
+
+<pre>
+
+
+</pre>
+
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $("#demo span").click(function (ev) {
+            var claz = $(this).next("div").attr("class").indexOf("open") >= 0;
+            $("[class*=open]").removeClass("open");
+            if (!claz){
+                $(this).next("div").addClass("open");
+            }
+        })
+
+
+    })
+
+</script>
+</body>
+</html>

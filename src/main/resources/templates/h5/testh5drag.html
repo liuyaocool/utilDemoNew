@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+        .drag div{
+            width: 50px;
+            height: 50px;
+            float: left;
+            background-color: red;
+            margin: 10px;
+            position: relative;
+        }
+        .drag{
+            background-color: #ffcc66;
+            width: 300px;
+            height: 300px;
+        }
+
+        #div1,#div2 {width:198px; height:66px;padding:10px;border:1px solid #aaaaaa;}
+
+        .drag_move{
+            background: red;
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: move;
+        }
+    </style>
+
+</head>
+<body>
+
+<pre>
+
+    拖动什么 - ondragstart 和 setData()
+    放到何处 - ondragover
+    进行放置 - ondrop
+        调用 preventDefault() 来避免浏览器对数据的默认处理（drop 事件的默认行为是以链接形式打开）
+        通过 dataTransfer.getData("Text") 方法获得被拖的数据。该方法将返回在 setData() 方法中设置为相同类型的任何数据。
+        被拖数据是被拖元素的 id ("drag1")
+        把被拖元素追加到放置元素（目标元素）中
+
+</pre>
+<div id="drag" class="drag">
+    <div id="1" draggable="true" dropzone="link" ondragstart="drag(event,this)">1</div>
+    <div id="2" draggable="true" dropzone="move" ondragstart="drag(event)">2</div>
+    <div id="3" draggable="true" dropzone="copy" ondragstart="drag(event)">3</div>
+    <div id="4" draggable="true" dropzone="move" ondragstart="drag(event)">4</div>
+</div>
+
+
+<p>请把 W3School 的图片拖放到矩形中：</p>
+<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" class="drag"></div>
+<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<img src="img_logo.gif" draggable="true" ondragstart="drag(event)" id="drag1" />
+
+<div class="drag_move" onmousedown="move(this)"> 可移动 </div>
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $("#drag").mousemove(function (e) {
+            console.log("aa");
+        });
+        $("div").click(function (e) {
+            // console.log("aa");
+        })
+
+    });
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        //拖动什么 ondragstart 和 setData()
+        //此方法设置被拖动的数据类型和值(此处为元素id)
+        ev.dataTransfer.setData("Text",ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data=ev.dataTransfer.getData("Text");
+        console.log(data);
+        ev.target.appendChild(document.getElementById(data));
+    }
+
+    function move(dom, target) {
+        //判断js对象
+        if (!target) {
+            target = dom;
+        } else if (jQuery && target instanceof jQuery && target[0]) {
+            target = target[0]; // 转换为js对象
+        } else if (typeof target == "string") {
+            target = $(target)[0];// 转换为js对象
+        } else if (target instanceof HTMLElement) {
+        } else { return; }
+        var l = target.offsetLeft,
+            t = target.offsetTop,
+            msl, mst;
+
+        dom.onmousemove = function (ev) {
+            if (!msl){
+                msl = ev.offsetX;
+                mst = ev.offsetY;
+                return;
+            }
+            l += ev.offsetX - msl;
+            t += ev.offsetY - mst;
+
+            target.style.top = t + "px";
+            target.style.left = l + "px";
+        };
+        dom.onmouseup = function () {
+            dom.onmousemove = null;
+        }
+    }
+</script>
+</body>
+</html>

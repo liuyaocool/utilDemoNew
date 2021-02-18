@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body{
+            height: 100%;
+            width: 3000px;
+        }
+        .aa{
+            width: fit-content;
+            transition: background-color 0.3s;
+            background-color: green;
+        }
+        .aa:before{
+            content: '123';
+            border-radius: 5px;
+            width: fit-content;
+            height: fit-content;
+            background-color: red;
+        }
+
+        .aa:active{
+            background-color: blue;
+
+        }
+        .aa:hover{
+
+            background-color: brown;
+            -webkit-transform: scale(2);
+            -moz-transform: scale(2);
+            -ms-transform: scale(2);
+            -o-transform: scale(2);
+            transform: scale(2);
+
+        }
+        .bb:link{
+            background-color: black;
+            color: white;
+        }
+        .bb:visited{
+            background-color: brown;
+            color: aquamarine;
+        }
+        span{
+            display: block;
+            background-color: green;
+            width: fit-content;
+            transition: all 0.2s;
+        }
+        span:hover{
+            -webkit-transform: skew(0deg,30deg);
+            -moz-transform: skew(0deg,30deg);
+            -ms-transform: skew(0deg,30deg);
+            -o-transform: skew(0deg,30deg);
+            transform: skew(0deg,30deg);
+            /*-webkit-transform: rotate(20deg);*/
+            /*-moz-transform: rotate(20deg);*/
+            /*-ms-transform: rotate(20deg);*/
+            /*-o-transform: rotate(20deg);*/
+            /*transform: rotate(20deg);*/
+        }
+        p{
+            transition: all 0.3s;
+        }
+        p:hover{
+            -webkit-transform: translate(0px,3px);
+            -moz-transform: translate(0px,3px);
+            -ms-transform: translate(0px,3px);
+            -o-transform: translate(0px,3px);
+            transform: translate(0px,3px);
+
+        }
+
+        p::selection{
+            background-color: red;
+
+        }
+        div::selection{
+            background-color: red;
+
+        }
+
+        input{
+            transition: all 0.2s;
+        }
+        input:valid{
+            background-color: yellow;
+        }
+        input:invalid{
+            background-color: gray;
+        }
+        input:hover{
+            -webkit-transform: scale(1.2,1.2);
+            -moz-transform: scale(1.2,1.2);
+            -ms-transform: scale(1.2,1.2);
+            -o-transform: scale(1.2,1.2);
+            transform: scale(1.2,1.2);
+        }
+        input:focus{
+            -webkit-transform: scale(1.2,1.2);
+            -moz-transform: scale(1.2,1.2);
+            -ms-transform: scale(1.2,1.2);
+            -o-transform: scale(1.2,1.2);
+            transform: scale(1.2,1.2);
+        }
+
+        @-webkit-keyframes angle {
+            0%{
+                -webkit-transform: rotate(0deg);
+            }
+            40%{
+                -webkit-transform: rotate(180deg);
+            }
+            70%{
+                -webkit-transform: rotate(-180deg);
+            }
+            100%{
+                -webkit-transform: rotate(0deg);
+            }
+        }
+
+        .angle{
+            background-color: yellow;
+            width: 100px;
+            height: 30px;
+        }
+        .angle:hover{
+            animation-name: angle;
+            animation-duration: 2s; /*定义播放时间*/
+            animation-delay: 1s; /*定义播放延迟时间*/
+            transition-timing-function: ease-in-out;/*过度效果*/
+
+            -webkit-animation-iteration-count: infinite;/*播放次数 无限次 可以改为数字*/
+            -moz-animation-iteration-count: infinite;/*播放次数*/
+            -o-animation-iteration-count: infinite;/*播放次数*/
+            animation-iteration-count: infinite;/*播放次数*/
+
+            animation-direction: alternate;/*播放方向， nomal: 正方向； alternate：偶正 奇反*/
+
+        }
+        .addAngle{
+            /*width: 100px;height: 50px; background: blue;*/
+            animation-name: angle;
+            animation-duration: 2s; /*定义播放时间*/
+            animation-delay: 0s; /*定义播放延迟时间*/
+            transition-timing-function: ease-in-out;/*过度效果*/
+
+            -webkit-animation-iteration-count: infinite;/*播放次数 无限次 可以改为数字*/
+            -moz-animation-iteration-count: infinite;/*播放次数*/
+            -o-animation-iteration-count: infinite;/*播放次数*/
+            animation-iteration-count: infinite;/*播放次数*/
+
+            animation-direction: alternate;/*播放方向， nomal: 正方向； alternate：偶正 奇反*/
+
+        }
+
+        .find-div-body{
+            position: relative;
+            top:30px;
+            right:0px;
+            width:400px;
+            height:200px;
+            padding:8px;
+            background-color: #FFFFFF;
+            border: #cccccc solid 1px;
+            border-radius: 3px;
+        }
+        .find-div-body:before{
+            box-sizing: content-box;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            top: -16px;;
+            right:41px;
+            padding:0;
+            border-bottom:8px solid #FFFFFF;
+            border-top:8px solid transparent;
+            border-left:8px solid transparent;
+            border-right:8px solid transparent;
+            display: block;
+            content:'';
+            z-index: 12;
+        }
+        .find-div-body:after{
+            box-sizing: content-box;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            top: -18px;;
+            right:40px;
+            padding:0;
+            border-bottom:9px solid #cccccc;
+            border-top:9px solid transparent;
+            border-left:9px solid transparent;
+            border-right:9px solid transparent;
+            display: block;
+            content:'';
+            z-index:10
+        }
+
+        overly{
+            width: 75px;
+            padding: 2px;
+            white-space: nowrap;  /*强制span不换行*/
+            display: block;  /*将span当做块级元素对待*/
+            overflow: hidden;  /*超出宽度部分隐藏*/
+            text-overflow: ellipsis;  /*超出部分以点号代替*/
+        }
+
+        .allchild *{
+            border: 1px red solid;
+        }
+        .dycFontSize{
+            font-size: 5vh; //浏览器窗口 高度5%
+        }
+
+        .gradual{
+            width: 100%;
+            height: 100px;
+            background: -webkit-linear-gradient(right, red, rgba(255,0,0,0), red);
+            background: -o-linear-gradient(right, red, rgba(255,0,0,0), red);
+            background: -moz-linear-gradient(right, red, rgba(255,0,0,0), red);
+            background: linear-gradient(to right, red, rgba(255,0,0,0), red);
+        }
+        .gradual1{
+            width: 100%;
+            height: 100px;
+            background: -webkit-linear-gradient(60deg, blue 80%, rgba(255,0,0,0));
+            background: -o-linear-gradient(60deg, blue 80%, rgba(255,0,0,0));
+            background: -moz-linear-gradient(60deg, blue 80%, rgba(255,0,0,0));
+            background: linear-gradient(60deg, blue 80%, rgba(255,0,0,0));
+        }
+        body{
+            margin: 0;
+            background: repeating-radial-gradient(circle at 20% 40%,#99CCCC 20px, #7171B7 40px, #CCCC99 60px, #4F9C9C 80px, #99CCCC 100px)
+                no-repeat fixed;
+        }
+        @-webkit-keyframes bling_ani { 0%{opacity: 0;} 50%{opacity: 1;} 100%{opacity: 0;} }
+        .bling{
+            animation-name: bling_ani;animation-duration: 0.3s; /*定义播放时间*/
+            -webkit-animation-iteration-count: infinite;/*播放次数 无限次 可以改为数字*/
+            -moz-animation-iteration-count: infinite;/*播放次数*/
+            -o-animation-iteration-count: infinite;/*播放次数*/
+            animation-iteration-count: infinite;/*播放次数*/
+        }
+
+        .point{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-image: radial-gradient(circle, red 45%, rgba(255,0,0,0));
+        }
+        .point1{
+            margin: 40px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #6dfbfb;
+            box-shadow: 0 0 8px 5px #6dfbfb;
+            line-height: 30px;
+        }
+        .clk:active{
+            color:red;
+        }
+
+        ::-webkit-scrollbar{
+            width: 20px;
+            height: 50px;
+            background-color: green;
+            border: 1px yellow solid;
+        }
+        ::-webkit-scrollbar-button{
+            background-color: red;
+            color: yellow;
+        }
+        ::-webkit-scrollbar-track-piece{
+            /*background-color: brown;*/
+        }
+        ::-webkit-scrollbar-thumb{
+            background-color: brown;
+        }
+        ::-webkit-scrollbar-corner{
+            background-color: yellow;
+        }
+
+
+
+        /*chrome 49+，ie15+，firefox 31+，safari 9.1+，opera 36+*/
+        :root {
+          --main-bg-color: coral;
+          --main-txt-color: blue;
+          --main-padding: 15px;
+          --main-height: 115px;
+          --main-width: 150px;
+        }
+        .repeat1 {
+          background-color: var(--main-bg-color);
+          color: var(--main-txt-color);
+          padding: var(--main-padding);
+          height: var(--main-height);
+          width: var(--main-width);
+        }
+        .repeat1 {
+          background-color: var(--main-bg-color);
+          color: var(--main-txt-color);
+          padding: var(--main-padding);
+          height: var(--main-height);
+          width: var(--main-width);
+        }
+    </style>
+</head>
+<body>
+
+<pre>
+
+
+    1. ::-webkit-scrollbar 滚动条整体部分，其中的属性: width,height,background,border等。
+    2. ::-webkit-scrollbar-button 滚动条两端的按钮，可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。
+    3. ::-webkit-scrollbar-track 外层轨道。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。
+    4. ::-webkit-scrollbar-track-piece 内层滚动槽/轨道，需要注意的就是它会覆盖第三个属性的样式。
+    5. ::-webkit-scrollbar-thumb 滚动的滑块
+    6. ::-webkit-scrollbar-corner 边角，两个滚动条交汇处
+    7. ::-webkit-resizer 定义右下角拖动块的样式/两个滚动条交汇处用于拖动调整元素大小的小控件（基本用不上）
+
+</pre>
+
+<div class="gradual"></div>
+<div class="gradual1"></div>
+
+<div class="dycFontSize">
+    字体大小随浏览器窗口改变
+</div>
+<div class="clk">点击</div>
+    <div class="aa">
+        测试before伪类
+    </div>
+
+    <a class="bb" href="http://www.baidu.com" target="view_window">访问百度</a>
+    <a class="bb" href="https://www.csdn.net/" target="view_window1">访问csdn</a>
+    <a class="bb" href="https://www.imooc.com/" target="view_window2">访问慕课网</a>
+    <a class="bb" href="https://http://www.w3school.com.cn//" target="view_window3">访问W3school</a>
+
+    <p>测试鼠标选中选择器</p>
+
+    age：<input type="number" min="18" max="50" style="width: 50px"/><br/>
+    email:<input type="email" placeholder="请输入邮箱。。。"/>
+
+    <span>aaaaaaaaaa</span>
+    <span>bbbbbbbbbb</span>
+
+<div class="point">12%</div>
+<div class="point1">34%</div>
+
+    <hr/>
+    <h3>高级动画设置Animation</h3>
+
+    <div class="angle"><--</div>
+    <div id="addAngle" style="width: 100px;height: 50px; background: blue;" onclick="rmvAngle()">--></div>
+    <div style="width: 100px;height: 50px; background: red;" class="bling"></div>
+    <input type="button" value="动态添加效果" onclick="addAngle()">
+    <input type="button" value="移除添加效果" onclick="rmvAngle()">
+
+    <div class="allchild">
+        <div>匹配子类所有</div>
+        <span>匹配子类所有2</span>
+    </div>
+
+<overly>
+    阿斯顿发大水法大师傅士大夫的撒法速度发送打法发大多数阿斯蒂阿斯蒂埃塞打算
+</overly>
+    <hr/>
+    <div class="find-div-body">
+    </div>
+
+
+<div>
+    css定义属性变量
+    <div class="repeat1"></div>
+    <div class="repeat2"></div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../static/js/jquery-1.12.2.min.js"></script>
+<script>
+    function addAngle() {
+        $("#addAngle").addClass("addAngle");
+    }
+    function rmvAngle() {
+        $("#addAngle").removeClass("addAngle");
+    }
+
+</script>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Ol3 draw</title>
+    <!--<link rel="stylesheet" type="text/css" href="../../../plugin/ol3/css/ol.css"/>-->
+    <style type="text/css">
+        body, #map {
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+            font-size: 13px;
+        }
+    </style>
+    <script type="text/javascript" src="ol-debug.js"></script>
+    <script type="text/javascript" src="../../../static/js/jquery-1.12.2.min.js"></script>
+    <script type="text/javascript">
+        function init(){
+            var untiled = new ol.layer.Image({
+                source: new ol.source.ImageWMS({
+                    ratio: 1,
+                    url: 'http://192.168.10.185:8086/geoserver/lzugis/wms',
+                    params: {'FORMAT': 'image/png',
+                        'VERSION': '1.1.1',
+                        LAYERS: 'lzugis:province',
+                        STYLES: ''
+                    },
+                    serverType: 'geoserver'
+                })
+            });
+            var vector = new ol.layer.Vector({
+                source: null
+            });
+            var map = new ol.Map({
+                controls: ol.control.defaults({
+                    attribution: false
+                }),
+                target: 'map',
+                layers: [untiled,vector],
+                view: new ol.View({
+                    projection: new ol.proj.Projection({
+                        code: 'EPSG:4326',
+                        units: 'degrees'
+                    }),
+                    center: [103.847, 36.0473],
+                    zoom: 4
+                })
+            });
+
+            $.get("24.json",function(result){
+                console.log(result.contours);
+                var geojson = {
+                    "type": "FeatureCollection",
+                    "totalFeatures": result.contours.length,
+                    "features": []
+                };
+
+                for(var i=0;i<result.contours.length;i++){
+                    var contour = result.contours[i];
+                    console.log(contour.color + "/" + contour.symbol);
+                    var coords = [];
+                    for(var j=0;j<contour.latAndLong.length;j++){
+                        var latlon = contour.latAndLong[j];
+                        coords.push([latlon[1], latlon[0]]);
+                    }
+                    var feature = {
+                        "type": "Feature",
+                        "geometry_name": "geom",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [coords]
+                        },
+                        "properties": {
+                            "color":contour.color,
+                            "symbol":contour.symbol
+                        }
+                    };
+                    geojson.features.push(feature);
+                }
+                console.log(geojson);
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(geojson)
+                });
+                var styleFunc = function(feature){
+                    var color = feature.get("color");
+                    var colors = {
+                        "0":"255,255,255,0",
+                        "25":"0, 0, 255, 0",
+                        "50":"255, 255, 0, 255",
+                        "100":"255, 0, 0, 255"
+                    };
+//					var color = colors[feature.get("symbol")];
+                    color = "rgba("+color+")";
+                    return new ol.style.Style({
+//                        stroke: new ol.style.Stroke({
+//                            color: '#000000',
+//                            width: 1
+//                        }),
+                        fill: new ol.style.Fill({
+                            color: color
+                        })
+                    })
+                };
+
+                vector.setSource(vectorSource);
+                vector.setStyle(styleFunc);
+                vector.setOpacity(0.8);
+            })
+        }
+    </script>
+</head>
+<body onLoad="init()">
+<div id="map">
+</div>
+</body>
+</html>

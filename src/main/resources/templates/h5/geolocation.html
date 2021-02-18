@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+
+<span id="p1"></span>
+
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    function load() {
+        if (navigator.geolocation){
+            console.log("支持h5Geolocation");
+            navigator.geolocation.getCurrentPosition(geocallback, errorback,
+                {enableHeighAccuracy: true});
+        } else {
+            console.log("不支持h5Geolocation");
+        }
+    }
+
+    window.addEventListener("load", load, false);
+    function geocallback() {
+
+        console.log("success");
+        $("#p1").text("success.")
+    }
+
+    function errorback() {
+        console.log("error")
+    }
+</script>
+</body>
+</html>

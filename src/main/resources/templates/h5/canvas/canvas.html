@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>画布</title>
+
+    <style>
+        #mycan{
+            /*background-color: #ffcc66;*/
+            border: 2px solid red;
+        }
+    </style>
+
+</head>
+<body>
+
+<canvas id="mycan" width="300px" height="300px" onclick="cgSize(300)">
+    此处为画布内容，浏览器不支持H5画布！
+</canvas>
+
+<input type="button" value="制图" onclick="getImg()" style="margin: 10px 10px;">
+<img id="myimg">
+<input type="button" value="no">
+<img id="imgmodel" src="../../static/img/working.gif">
+
+<br/><input type="button" value="cgSize" onclick="cgSize(250)">
+<input type="button" value="fill" onclick="fill()">
+<input type="button" value="画笔" onclick="pencel()">
+<input type="button" value="渐变1" onclick="ccgSlow()">
+<input type="button" value="渐变2" onclick="ccgSlow2()">
+<input type="button" value="图片" onclick="imgDraw()">
+<input type="button" value="画线1" onclick="lineDraw()">
+<input type="button" value="画线2" onclick="lineDraw2()">
+<input type="button" value="画线3" onclick="lineDraw3()">
+<input type="button" value="画线 闭合" onclick="lineDrawClose()">
+<input type="button" value="多边形" onclick="polygon()">
+<input type="button" value="移动的线" onclick="moveLine()">
+<input type="button" value="云朵" onclick="cloud()">
+<input type="button" value="清除" onclick="remove()">
+
+<br/>
+<pre>
+Canvas路径：
+        在CanvasRenderingContext2D对象中，存在唯一路径，但每个路径都可以存在0 - n个子路径，
+    每个子路径由一系列点阵和一个子路径是否闭合的标志组成，显然少于2个点（直线）的子路径是
+    不存在的，路径操作有以下几个重要函数：
+        beginPath(); 重新开辟一个当前路径下的子路径
+        closePath(); 闭合路径
+        fill(); 对所有子路径包含的区域进行填充
+        stroke(); 使用定义的画笔风格对所有子路径进行描绘
+        moveTo(); 定义起点坐标
+        lineTo(); 绘制直线路径
+        isPointInPath(横坐标，纵坐标); 判断指定的坐标是否在当前路径
+        rect(); 通过路径画矩形
+        arc(); 以路径形式化圆弧
+        arcTo(); 以路径形式化圆弧
+        quadraticCurveTo(控制点坐标x，控制点坐标y, 终点坐标x， 终点坐标y); //二次贝塞尔曲线
+        bezierCurveTo(); // 三次贝塞尔曲线(6个参数)
+    图像处理：
+        restore
+        save
+        globalAlpha
+        globalCompositeOperation
+
+【注】
+    1：原点必须在画布范围内，即图形有一部分在画布内
+    2：画圆圈时有一条线，是画了很多个圈，起点和终点不是一个位置。closePath（）就自动将起点终点连接了。
+    由于浏览器不同，解析360就不同。
+</pre>
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+    var myCan = document.getElementById("mycan");
+    var context = myCan.getContext("2d");//2d  3d -- 获得canvas接口
+
+    function polygon() {
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(10,10);
+        context.lineTo(20,20);
+        context.lineTo(20,30);
+        context.lineTo(30,40);
+        context.lineTo(20,50);
+        context.lineTo(10,50);
+        context.lineTo(5,50);
+        context.lineTo(7,30);
+        context.lineTo(3,15);
+        context.strokeStyle = "greenyellow";
+        context.fillStyle = "greenyellow";
+        context.stroke();
+        context.fill();
+
+        context.closePath();
+    }
+
+    /**
+     * source-over	默认。在目标图像上显示源图像。
+     * source-atop	在目标图像顶部显示源图像。源图像位于目标图像之外的部分是不可见的。
+     * source-in	在目标图像中显示源图像。只有目标图像内的源图像部分会显示，目标图像是透明的。
+     * source-out	在目标图像之外显示源图像。只会显示目标图像之外源图像部分，目标图像是透明的。
+     * destination-over	在源图像上方显示目标图像。
+     * destination-atop	在源图像顶部显示目标图像。源图像之外的目标图像部分不会被显示。
+     * destination-in	在源图像中显示目标图像。只有源图像内的目标图像部分会被显示，源图像是透明的。
+     * destination-out	在源图像外显示目标图像。只有源图像外的目标图像部分会被显示，源图像是透明的。
+     * lighter	显示源图像 + 目标图像。
+     * copy	显示源图像。忽略目标图像。
+     * xor	使用异或操作对源图像与目标图像进行组合。
+     */
+    function remove() {
+        console.log(context.globalCompositeOperation)
+        context.beginPath();
+        context.arc(20,20, 20, 0, 2*Math.PI, false);
+        context.globalCompositeOperation = 'destination-out';
+
+        context.fill();
+        context.globalCompositeOperation = 'source-over';
+        context.closePath();
+
+    }
+    function lineDrawClose() {
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(10,10);
+        context.lineTo(75,150);
+        context.lineTo(150,10);
+        context.closePath();
+        context.strokeStyle = "greenyellow";
+        context.closePath();
+        context.stroke();
+
+    }
+    function lineDraw3() {
+        context.lineWidth = 15;
+        context.strokeStyle = "green";
+        context.shadowBlur = 4;//模糊度
+        context.shadowColor = 'rgba(100,100,100,0.5)';
+        context.shadowOffsetX = 5;
+        context.shadowOffsetY = 5;
+        //1
+        context.beginPath();//开辟一条新的子路径
+        context.lineCap = "butt";//默认 不处理
+        context.moveTo(10,10);//定义起点坐标
+        context.lineTo(10,150);//画直线
+        context.lineTo(60,150);//画直线
+        context.lineJoin = "bevel";//miter:连接处直角  round：圆角(r=线宽)  bevel：斜角
+        context.stroke();//绘制
+    }
+    function lineDraw2() {
+        context.lineWidth = 15;
+        context.strokeStyle = "green";
+        //1
+        context.beginPath();//开辟一条新的子路径
+        context.lineCap = "butt";//默认 不处理
+        context.moveTo(10,10);//定义起点坐标
+        context.lineTo(150,10);//画直线
+        context.stroke();//绘制
+        //2
+        context.beginPath();
+        context.lineCap = "round";//头 尾添加半圆弧
+        context.moveTo(10,50);
+        context.lineTo(150,50);
+        context.stroke();
+        //3
+        context.beginPath();
+        context.lineCap = "square";//头 尾添加矩形 长=线宽/2 宽=线宽
+        context.moveTo(10,100);
+        context.lineTo(150,100);
+        context.stroke();
+    }
+    function lineDraw() {
+        context.strokeStyle = "yellowGreen"
+        //1
+        context.beginPath();
+        context.moveTo(10,10);
+        context.lineTo(150,10);
+        context.stroke();
+        //2
+        context.beginPath();
+        context.moveTo(10,40);
+        context.lineTo(150,40);
+        context.lineWidth = 15;
+        context.stroke();
+    }
+    function imgDraw() {
+        var img = document.getElementById("imgmodel");
+        var pattern;
+        try {
+            pattern = context.createPattern(img, "repeat-y");//repeat repeat-x repeat-y no-repeat
+        }catch (e) {
+            console.log(e);
+        }
+        context.fillStyle = pattern;
+        context.fillRect(0,0,200,200);//填充矩形
+    }
+
+    function ccgSlow() {
+        var gradient = context.createRadialGradient(10,10,20,300,300,50);//x0 y0 r0 x1 y1 r1
+        gradient.addColorStop(0,"blue");
+        gradient.addColorStop(0.5,"green");
+        context.fillStyle = gradient;
+        context.fillRect(0,0,300,300);
+    }
+    function ccgSlow2() {
+        var gradient = context.createLinearGradient(0,0,300,0);
+        gradient.addColorStop(0,"greenyellow");
+        gradient.addColorStop(0.3,"blue");
+        gradient.addColorStop(0.7,"green");
+        gradient.addColorStop(1,"pink");
+        context.fillStyle = gradient;
+        context.fillRect(0,0,300,200);
+    }
+    function pencel() {
+        context.fillStyle = 'rgba(111, 0, 0, 0.3)';
+        // context.fillStyle = "red";
+        context.fillRect(0,0,50,25);
+        context.strokeStyle = "blue";
+        context.strokeRect(50,50,50,50);
+        context.fillStyle = "green";
+        context.fillRect(100,100,50,50);
+        context.strokeStyle = "black";
+        context.strokeRect(150,50,50,50);//描绘一个指定矩形
+    }
+    function getImg() {
+        var url = myCan.toDataURL("image/jpeg", 0.5);
+        document.getElementById("myimg").src = url;
+    }
+    function cgSize(wid) {
+        myCan.setAttribute("width", wid);
+    }
+    function fill() {
+        context.fillRect(10,1,50,50);
+        console.log(myCan.getContext("2d"));
+        console.log(myCan.getContext("3d"));
+    }
+
+    function moveLine() {
+        
+    }
+    
+    function cloud(size, position, text) {
+        text = text ? text : "文本";
+        size = parseInt(size) >= 0 ? r : 80;
+        position = [100,100];//云中心点坐标
+        /**
+         第一个参数：圆点x坐标；
+         第二个参数:圆点y轴坐标；
+         第三个参数：半径；
+         第四个参数：起始角度；
+         Math.PI*2是JS计算方法，是圆
+         第六个参数：是否按照顺时针
+         */
+        var rounds = [
+            {r: 0.2 * size,x: position[0]-size*0.33, y:position[1]+size*0.05},
+            {r: 0.115 * size,x: position[0]-size*0.2, y:position[1]-size*0.15},
+            {r: 0.25 * size,x: position[0]+size*0.1, y:position[1]-size*0.07},
+            {r: 0.18 * size,x: position[0]+size*0.3, y:position[1]+size*0.07},
+        ];
+        context.fillStyle = "green";
+        for (var i = 0; i < rounds.length; i++) {
+            context.arc(rounds[i].x, rounds[i].y, rounds[i].r, 0, 2*Math.PI);
+        }
+        context.strokeStyle = "black";//边框
+        context.rect(rounds[0].x, rounds[0].y, rounds[3].x - rounds[0].x, rounds[0].r);
+        context.stroke();
+        context.fill();
+        context.fillStyle = "white";
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.font = 'bold '+size/5+'px Microsoft YaHei';
+        context.fillText(text, position[0], position[1]);
+    }
+
+</script>
+</body>
+</html>

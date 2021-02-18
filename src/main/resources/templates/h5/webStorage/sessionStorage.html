@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>SessionStorage</title>
+
+    <style>
+        span{
+            color: green;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<pre>
+
+    在单个页面或窗口中使用本地存储
+    SessionStorage本地存储对应SessionLocalStorage接口，存在Storage接口的sessionStorage属性
+
+</pre>
+
+name:<input type="text" id="name"><br/>
+value:<input type="text" id="val"><br/>
+<input type="button" onclick="setStor()" value="setStro">
+<input type="button" onclick="getStor()" value="getStro">
+<input type="button" onclick="setStor2()" value="setStro2">
+<input type="button" onclick="getStor2()" value="getStro2">
+<input type="button" onclick="removeStor()" value="removeStro">
+<input type="button" onclick="clearStor()" value="clearStro">
+<input type="button" onclick="keyFunc()" value="key()">
+<br/><br/>
+getStro：<span id="pp1"></span><br/><br/>
+key()：<span id="pp2"></span><br/><br/>
+key：<span id="p1"></span><br/><br/>
+oldValue：<span id="p2"></span><br/><br/>
+newValue：<span id="p3"></span><br/><br/>
+url：<span id="p4"></span><br/><br/>
+storageArea：<span id="p5"></span><br/><br/>
+
+<script src="../../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    var seStor;
+    $(function () {
+        if (typeof (window.sessionStorage)){
+            seStor = window.sessionStorage;
+            console.log("支持sessionStorage");
+        } else {
+            console.log("不支持sessionStorage");
+        }
+        //仅支持IE
+        // $(window).on("storage", function (ev) {
+        //     alert("aa");
+        //     $("p").append(ev.key)
+        // })
+    });
+
+    //监听存储对象的属性改变 仅支持IE
+    //对键值对的增、删、改都会触发
+    window.addEventListener("storage",function (ev) {
+        var url;
+        if (ev.url){
+            url = ev.url;
+        } else if (ev.uri){
+            url = ev.uri;
+        }
+        $("#p1").text(ev.key + "、"); //改变的键
+        $("#p2").text(ev.oldValue + "、"); //改变的旧值
+        $("#p3").text(ev.newValue + "、"); //改变的新值
+        $("#p4").text(url + "、"); //改变的url地址
+
+        //此属性指向存储数据发生变化的WindowloaclStorage或WindwosessionStorage对象
+        var area = ev.storageArea;
+        for (var i = 0; i < area.length; i++) {
+            var key = area.key(i);
+            var val = area.getItem(key);
+            $("#p5").append(key + "、" + val + "；"); //改变的url地址
+        }
+    }, false);
+
+    function keyFunc() {
+        for (var i = 0; i < seStor.length ; i++) {
+            $("#pp2").append(seStor.key(i) + "、"); //获得key的方法
+        }
+    }
+    function setStor() {
+        seStor.setItem($("#name").val(), $("#val").val());
+    }
+    function setStor2() {
+        seStor.setItem("realname", $("#name").val());
+    }
+    function getStor() {
+        for (i in seStor){
+            // console.log(i);
+        }
+        console.log(seStor);
+        //获得值的方法
+        $("#pp1").text(seStor.length + "：" + seStor.getItem($("#name").val()));
+    }
+    function getStor2() {
+        //获得值的方法
+        console.log(seStor.length + "：" + seStor.realname);
+    }
+    
+    function removeStor() {
+        seStor.removeItem($("#name").val());//删除
+    }
+
+    function clearStor() {
+        seStor.clear();
+    }
+
+
+
+</script>
+</body>
+</html>

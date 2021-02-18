@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link href="../../static/css/video/video-js.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!--<object id="MediaPlayer" classid="clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95" width="800" height="600" standby="Loading Windows Media Player components…" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">-->
+    <!--<param name="FileName" value="test.avi">-->
+    <!--<param name="AutoStart" value="true">-->
+    <!--<param name="ShowControls" value="true">-->
+    <!--<param name="BufferingTime" value="2">-->
+    <!--<param name="ShowStatusBar" value="true">-->
+    <!--<param name="AutoSize" value="true">-->
+    <!--<param name="InvokeURLs" value="false">-->
+    <!--<param name="AnimationatStart" value="1">-->
+    <!--<param name="TransparentatStart" value="1">-->
+    <!--<param name="Loop" value="1">-->
+    <!--<embed type="application/x-mplayer2" src="test.avi" name="MediaPlayer" autostart="1" showstatusbar="1" showdisplay="1" showcontrols="1" loop="0" videoborder3d="0" pluginspage="http://www.microsoft.com/Windows/MediaPlayer/" width="800" height="600"></embed>-->
+<!--</object>-->
+
+<!--<div style="width: 400px;height: 300px;overflow: auto">-->
+    <!--<video id="videoPlayer" controls preload="auto" style="width:400px;height: 300px;">-->
+        <!--&lt;!&ndash;<source src="E:\测试文件\英伦对决HD高清中英双字.mkv" type="video/*">&ndash;&gt;-->
+        <!--<source src="E:\测试文件\超级英雄来了[流畅].mp4" type="video/mp4">-->
+    <!--</video>-->
+<!--</div>-->
+    <video id="videovv" style="width: 81%;height: 381px;" id="video" webkit-playsinline="true" preload="auto" controls="controls">
+
+        您的浏览器不支持该视频格式。
+    </video>
+
+<input id="videoIp" type="file" accept="video/*" onchange="changeFile()">
+
+
+<script src="../../static/js/video/video.min.js"></script>
+<script src="../../static/js/video/videojs-ie8.min.js"></script>
+<script src="../../static/js/video/zh-CN.js"></script>
+<script src="../../static/js/base.js"></script>
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+
+<script type="text/javascript">
+    var myPlayer = videojs("videoPlayer");
+    videojs("videoPlayer").ready(function(){
+        var myPlayer = this;
+        myPlayer.play();
+    });
+    function changeFile() {
+        var url = getObjectURL("videoIp");
+        var sourceDom = $("<source type='video/*'>");
+        sourceDom.attr("src", url);
+        $("#videovv").append(sourceDom);
+        $("#videovv").attr("src", url);
+    }
+
+</script>
+</body>
+</html>

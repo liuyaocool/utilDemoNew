@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+        #echarts1,#echarts2{
+            width: 400px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="echarts1"></div>
+<div id="echarts2"></div>
+
+<script type="text/javascript" src="../../static/js/echart/echarts.min.js"></script>
+<script type="text/javascript">
+
+    var options = {
+        title: {
+            text: "折线图"
+        },
+        tooltip: {},
+        legend: {
+            // data:["柱状图"]
+        },
+        xAxis:{
+
+            data: ["Android","IOS","PC","Ohter"] //x轴坐标
+        },
+        yAxis: {
+
+        },
+        series: [{
+            name:"访问量",
+            type: "bar",
+            // type: "line",
+            data:[600,200,360,100] //对应x轴坐标值
+        }]
+    };
+    var options2 = { //饼图
+        title: {
+            text: "饼图"
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series: [{
+            name:"访问量",
+            type: "pie",
+            // radius:'60%',
+            radius:['35%', '60%'],
+            data:[
+                {value:600, name:"Android"},
+                {value:300, name:"IOS"},
+                {value:200, name:"PC"},
+                {value:100, name:"OTHER"}
+            ]
+        }]
+    };
+
+    var myChart = echarts.init(document.getElementById("echarts1"));
+    myChart.clear();//清空画布
+    myChart.setOption(options);
+
+    var myChart2 = echarts.init(document.getElementById("echarts2"));
+    myChart2.setOption(options2);
+
+</script>
+</body>
+</html>

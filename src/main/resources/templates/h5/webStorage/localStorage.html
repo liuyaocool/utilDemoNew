@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>LocalStorage</title>
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+
+<pre>
+
+    可在多个标签页或多个窗口中共享本地数据(只需将sessionStorage.html中换成localStorage即可测试)
+    存储以键值对(也称Item)的形式存在，值可以存储JSO格式字符串数据
+    LocalStorage本地存储对应WindowLocalStorage接口，存在Storage接口的localStorage属性
+    长久存在，只要不手动删除，则本地存储将一直存在
+
+    Storage接口的属性和方法
+        length
+        key()
+        getItem()
+        setItem()
+        removeItem()
+        clear()
+
+</pre>
+
+<script src="../../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+
+    $(function () {
+        if (typeof (window.localStorage)){
+            console.log("支持localStorage");
+        } else {
+            console.log("不支持localStorage");
+        }
+
+
+    })
+
+</script>
+</body>
+</html>

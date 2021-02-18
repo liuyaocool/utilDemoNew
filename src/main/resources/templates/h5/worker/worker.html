@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Worker</title>
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+<pre>
+
+专用线程--DedicatedWorker接口（简称Worker接口）
+    兼容性比共享线程好
+    主线程建立专用线程 来控制专用线程的调度和数据传送。
+
+    实现了AbstractWorker接口--提供了一系列在主线程中创建和控制专用线程的属性和方法
+    Worker()
+    onmessage
+    onerror
+    postMessage() //普通文本 二进制数据块 JSON XML格式化的数据
+    terminate()
+
+</pre>
+
+<input type="button" id="sendWork" value="sdwk">
+<p></p>
+
+<script src="../../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+    var worker;
+    $(function () {
+
+        if (typeof(Worker)){
+            console.log("支持worker")
+            /**
+             * 调用次构造，会在浏览器后台隐式实例化一个PortMessage对象
+             * 此对象定义了消息端口的属性和方法，支持在两个消息端口之间信息数据的传输
+             * 页面关闭 线程结束
+             * 数据包括 普通文本 二进制数据块 JSON XML格式
+             */
+            worker = new Worker("../../../static/js/h5/worker/worker.js");//DedicateWorker接口构造方法
+            worker.addEventListener("message",getMessage, false);
+            worker.addEventListener("error",errorMsg, false);
+
+            $("#sendWork").click(sendWork);
+        } else {
+            console.log("不支持Worker")
+        }
+    });
+
+    function sendWork(ev) {
+        worker.postMessage({//消息发送方法
+            a:"a",
+            b:"b",
+            c:"c"
+        });
+    }
+    
+    function getMessage(ev) {
+        $("p").append("<br/>传回的数据:" + ev.data);
+
+        if (ev.data > 10) worker.terminate();//终止专用子线程的执行
+    }
+
+    function errorMsg(ev) {
+        $("p").text("异常信息：" + ev.data);
+        $("p").append("<br/>异常行号：" + ev.lineno);
+        $("p").append("<br/>异常文件：" + ev.filename);
+    }
+
+</script>
+</body>
+</html>

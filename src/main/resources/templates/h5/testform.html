@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <style>
+
+        input:invalid{
+            background-color: indianred;
+        }
+        input:valid{
+            background-color: greenyellow;
+        }
+    </style>
+
+</head>
+<body>
+
+<form method="post" action="#">
+    <input type="button" onclick="setEmail()" value="设置email">
+    onpropertychange 是ie上的方法 == oninput<br/>
+    email：<input type="email" name="ema" id="email" maxlength="20" onpropertychange="loadEmail()" oninput="loadEmail(this)" onchange="console.log('onchange');" required="required"><span></span><br/>
+    number：<input type="number" min="15" id="number" oninput="loadNum(this)" required="required"><span></span><br/>
+    reg：<input type="text" oninput="valPattern(this)" maxlength="20" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="大小写+数字+8位"><span></span><br/>
+    reg：<input type="text" oninput="valPattern(this)" maxlength="20" pattern="^(?=.*\d)(?=.*[a-zA-Z]).{6,}" placeholder="字母+数字+6位"><span></span><br/>
+
+    <hr/>
+    <form onsubmit="" name="myform">
+        只输入英文<input type="text" pattern="/^[a-zA-Z]$/" maxlength="10"><br/>
+        邮件<input type="email"><br/>
+        数字<input type="number" min="18" name="num" oninput="loadNum(this)"><br/>
+        6位<input type="password" min="6" max="6"><br/>
+    </form>
+
+    <form name="submitForm" action="www.baidu.com">
+        用户名:<input type="text" name="username" pattern="/^[a-zA-Z]$/" maxlength="10" autocomplete="off"><br/>
+        <!--autocomplete="new-password": 解决设置为off后chrome失效问题-->
+        密码<input type="password" name="password" autocomplete="new-password"><br/>
+        确认密码<input type="password" name="rePwd" autocomplete="new-password"><br/>
+        <input type="submit" value="submit">
+    </form>
+</form>
+
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+
+    // $(function () {
+        var num = document.getElementById("number");
+        num.addEventListener("invalid", function (ev) {
+            showValidMsg(ev,num.validity,this);
+        },false);
+    // });
+    function setEmail() {
+        $("#email").val("adadf@163.com").change();
+    }
+    function loadNum(dom) {
+        // document.myform.num.setCustomValidity("不能为空。");
+        // document.myform.num.validationMessage;
+        if (dom.validity.valueMissing){
+
+            dom.setCustomValidity("不能为空。");//不好使
+            dom.validationMessage;
+            alert("aa")
+            // $(dom).next("span").text("内容不能为空。");
+        } else {
+            $(dom).next("span").text("");
+        }
+        console.log(dom.validity);
+    }
+    function loadEmail(dom) {
+        if (dom.validity.valueMissing){
+            $(dom).next("span").text("内容不能为空。");
+        } else if(dom.validity.typeMismatch){
+            $(dom).next("span").text("格式不正确。");
+        } else if (dom.validity.tooLong){
+            $(dom).next("span").text("超长。");
+        } else if (dom.validity.stepMismatch){
+            $(dom).next("span").text("不合法。");
+        } else if (dom.validity.rangeUnderflow){
+            $(dom).next("span").text("是输入过小。");
+        } else if (dom.validity.rangeOverflow){
+            $(dom).next("span").text("是输入过大。");
+        }else if (dom.validity.patternMismatch){
+            $(dom).next("span").text("不满足正则。");//三位数字
+        }else if (!dom.validity.valid){
+            $(dom).next("span").text("存在不满足的验证。");
+        }
+        else {
+            $(dom).next("span").text("");
+        }
+        // console.log(dom.validity);
+    }
+    function showValidMsg(ev,va,jsObj) {
+
+        if (va.valueMissing){
+            ev.preventDefault();
+            $(jsObj).next("span").text("内容不能为空");
+        }
+    }
+
+    function valPattern(dom) {
+        var t = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+        if (dom.validity.patternMismatch){
+            $(dom).next("span").text("强度太低。");
+        } else {
+            $(dom).next("span").text("");
+        }
+    }
+
+    function checkInut(dom) {
+        if (dom.validity.valueMissing || dom.validity.typeMismatch || dom.validity.tooLong || dom.validity.stepMismatch
+            || dom.validity.rangeUnderflow || dom.validity.rangeOverflow || dom.validity.patternMismatch || !dom.validity.valid){
+            console.log("不符合规则");
+            return false;
+        }
+        console.log("符合规则");
+        return true;
+    }
+
+</script>
+</body>
+</html>

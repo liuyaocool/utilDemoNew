@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>基础控件</title>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+        table{
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table id="tb">
+        <tr>
+            <td>aaa</td>
+            <td>aaa</td>
+            <td>aaa</td>
+            <td>aaa</td>
+            <td>aaa</td>
+            <td>aaa</td>
+            <td>aaa</td>
+        </tr>
+    </table>
+    <button onclick="tableToExcel('tb')">导出</button>
+<script src="../../static/js/jquery-1.12.2.min.js"></script>
+
+<script type="text/javascript">
+
+// https://www.cnblogs.com/liuxianan/p/js-excel.html
+//https://blog.csdn.net/hhzzcc_/article/details/80419396
+//https://www.cnblogs.com/SRH151219/p/11076290.html
+//http://www.imooc.com/article/42424
+var tableToExcel = (function() {
+
+    var uri = 'data:application/vnd.ms-excel;base64,',
+        template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+        base64 = function(s) {
+            return window.btoa(unescape(encodeURIComponent(s)))
+        },
+        format = function(s, c) {
+            return s.replace(/{(\w+)}/g, function(m, p) {
+                return c[p];
+            })
+        }
+
+    return function(table, name) {
+        if (!table.nodeType) table = document.getElementById(table);
+        var ctx = {
+            worksheet: name || 'sheet01',
+            table: table.innerHTML
+        };
+        window.location.href = uri + base64(format(template, ctx));
+    }
+
+})();
+</script>
+</body>
+
+</html>

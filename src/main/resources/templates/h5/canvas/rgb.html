@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>canvas像素点</title>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<canvas id="canvas1" width="2040" height="1080">此处为画布内容，浏览器不支持H5画布！</canvas>
+<canvas id="canvas3" width="1920" height="1080">此处为画布内容，浏览器不支持H5画布！</canvas>
+<canvas id="canvas2" width="4096" height="2160">此处为画布内容，浏览器不支持H5画布！</canvas>
+
+<pre>
+    width：canvas的宽度，单位是像素。
+    height：canvas的高度，单位是像素。
+    data：一个Uint8ClampedArray的一维数组，包含了每个像素的RGBA值。
+
+        什么是Uint8ClampedArray？这个数组里的数值是8位的整型，而且值得范围在0和255之间。
+    任何不在[0, 255]之间的数都会变成[0, 255]之间最接近的那个整型数。0到255之间，那记录的
+    自然是RGBA颜色数值啦。这个data数组是这样排列的，data[0]是第一排第一列的像素R通道的数
+    值，data[1]第一排第一列的像素G通道的数值，data[3]（[0, 255]）是第一排第一列的像素的
+    Alpha通道的数值。而data[4]是第一排第二列的像素的R通道数值，以此类推。
+
+    比如说，第50排第200列的像素的蓝色通道的值：
+
+    ctx.putImageData(myImageData, dx, dy);
+    这个方法可以传入一个ImageData对象，然后把ImageData对象中的像素信息都画出来。dx, dy是
+    绘制的左上角坐标。
+    比如我们可以逐一改变ImageData对象中的值，从而改变了整个图象的颜色，再把它画出来。
+    这有什么用呢？对于要对像素进行的操作来说，这很方便。比如反色、去色等操作。
+</pre>
+
+<script type="text/javascript">
+
+    draw("canvas1", dataLine);
+    draw("canvas2", dataRandom);
+    draw("canvas3", dataRandom);
+
+    function draw(id, dataFunc) {
+        var myCan = document.getElementById(id);
+        var w = myCan.width;
+        var h = myCan.height;
+        var ctx = myCan.getContext("2d");//2d  3d -- 获得canvas接口
+        // var img = new Image();
+        // ctx.drawImage(img, 0, 0);
+
+        ctx.putImageData(dataFunc(ctx, w, h), 0, 0);
+    }
+
+
+    function dataRandom(ctx, w, h) {
+        var imgData = ctx.createImageData(w,h);
+        for (var i = 0; i < w*h*4; i++) {
+            if ((i + 1) % 4 == 0) {
+                imgData.data[i] = 256;
+            } else{
+                imgData.data[i] = Math.random() * 256;
+            }
+        }
+        return imgData;
+    }
+
+    function dataLine(ctx, w, h) {
+        var imgData = ctx.createImageData(w,h);
+        var index = 0;
+        for (var i = 0; i < h; i++) {
+            var r = Math.random() * 256;
+            var g = Math.random() * 256;
+            var b = Math.random() * 256;
+            var a = Math.random() * 256;
+            for (var j = 0; j < w; j++) {
+                imgData.data[index++] = r;
+                imgData.data[index++] = g;
+                imgData.data[index++] = b;
+                imgData.data[index++] = 256;
+            }
+        }
+        return imgData;
+    }
+
+</script>
+</body>
+
+</html>

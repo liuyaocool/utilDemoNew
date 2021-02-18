@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/index.css}"/>-->
+
+    <script type="text/javascript" src="/static/js/jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="/src/main/resources/static/js/fileUpload.js"></script>
+</head>
+<body>
+
+123444
+<form method="post" action="/file/upload" enctype="multipart/form-data">
+    文件上传:<input type="file" name="file" onchange="videoUpload(this)"/>
+    <input type="submit"/>
+    <div onclick="videoUpload()" id="ajaxSubmit">ajax提交</div>
+</form>
+
+</body>
+</html>
