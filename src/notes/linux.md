@@ -55,13 +55,27 @@ yum makcache 出现 Failed to set locale, defaulting to C.UTF-8 错误
 
   - yum install glibc-langpack-zh
 
-# 配置镜像
+# 配置镜像 yum
 
 yum install 报错 failed to download metadata for repo 'AppStream'
 
 ## CentOS
 
-- https://developer.aliyun.com/mirror/
+- 1 配置阿里镜像：https://developer.aliyun.com/mirror/
+- 2 cd /etc/yum.repos.d
+  - 此路径包含很多镜像 
+  - 如果用到哪一个，可以vi *.repo，把baseurl放开
+- 3 *.repo 说明
+  - name=CentOS Stream $releasever - Extras
+    mirrorlist=http://mirrorlist.centos.org/?release=$stream&arch=$basearch&repo=extras&infra=$infra
+    baseurl=http://mirror.centos.org/$contentdir/$stream/extras/$basearch/os/
+    gpgcheck=1
+    enabled=1
+    gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+- 如何使用tuna的epel镜像
+  - 启用Extras源， 见2
+  -  Extras源（[tuna](https://mirrors.tuna.tsinghua.edu.cn/help/centos)也有镜像）里安装epel-release：yum install epel-release
+  - 其他方式见 https://mirrors.tuna.tsinghua.edu.cn/help/epel/
 
 # 网络
 
