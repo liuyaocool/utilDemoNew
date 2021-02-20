@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -111,51 +112,40 @@ public class IOUtil {
         }
     }
 
-    public static String readFile(MultipartFile file,  String encoding,
-                                  Callback<BufferedReader, StringBuilder> callback){
+    public static void readFile(MultipartFile file,  String encoding, Consumer<String> callback){
         InputStream is = null;
         try {
             byte[] filebyte = file.getBytes();
             is = new ByteArrayInputStream(filebyte);
-            return readFile(is, encoding, callback);
+            readFile(is, encoding, callback);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             close(is);
         }
-        return null;
     }
 
-    public static String readFile(String path, String encoding,
-                                  Callback<BufferedReader, StringBuilder> callback){
+    public static void readFile(String path, String encoding, Consumer<String> callback){
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(path);
-            return readFile(fis, encoding, callback);
+            readFile(fis, encoding, callback);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
             close(fis);
         }
-        return null;
     }
-    public static String readFile(InputStream is, String encoding,
-                                  Callback<BufferedReader, StringBuilder> callback){
+    public static void readFile(InputStream is, String encoding, Consumer<String> callback){
         BufferedReader reader = null;
         InputStreamReader isr = null;
         encoding = null == encoding ? "UTF-8" : encoding;
-        StringBuilder res = new StringBuilder();
         try{
             isr = new InputStreamReader(is, encoding);
             reader = new BufferedReader(isr);
-            if (null == callback){
-                String line;
-                while((line = reader.readLine()) != null){
-                    res.append(line).append("\n");
-                }
-            } else {
-                res = callback.call(reader);
-
+            String line;
+            while((line = reader.readLine()) != null){
+                callback.accept(line);
             }
         }catch(IOException e){
             e.printStackTrace();
@@ -163,7 +153,6 @@ public class IOUtil {
             close(isr);
             close(reader);
         }
-        return res.toString();
     }
 
     public static String fileMd5(MultipartFile file){

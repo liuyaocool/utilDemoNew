@@ -123,7 +123,7 @@ yum install 报错 failed to download metadata for repo 'AppStream'
 - gcc： yun install gcc
 - wget：yum install wget    --可下载网络资源
 
-# 常用功能
+# 常用操作
 
 ## 配置环境变量
 
@@ -152,6 +152,47 @@ yum install 报错 failed to download metadata for repo 'AppStream'
   - cat /proc/version
   - uname -r    --显示内核版本
     - -a    --显示主机名 内核版本 硬件平台等
+
+# 正则
+
+真实字符以md文档显示为主
+
+- 匹配操作符
+
+  ```
+   \		转义
+   .		匹配任意单个字符
+   [1236a]	匹配[]设定的任意单个字符
+   [^12]		匹配任意非[^]设定单个字符
+   [a-k]		匹配任意a-k单个字符
+   ^		行首
+   $		行尾
+   \<,\>		单词首尾便捷
+   \<***\>	规定死"***"这个单词
+   |		连接操作符
+   (,)	选择操作符
+   \n		反向引用
+  ```
+
+- 重复操作符
+
+  ```
+  ？      匹配0-1次
+  *       匹配0-多次
+  +       匹配1~多次
+  {n}     匹配n次
+  {n,}    匹配n~多次
+  {n,m}   匹配n~m次
+  ```
+
+## 例子
+
+```
+^ 行开头匹配
+cat 6379.conf | grep ^#  # 查看#开头的行
+cat 6379.conf | grep ^[^#]  # 查看非#开头的行
+
+```
 
 
 # 脚本示例
