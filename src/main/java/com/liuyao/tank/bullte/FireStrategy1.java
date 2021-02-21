@@ -2,26 +2,22 @@ package com.liuyao.tank.bullte;
 
 import com.liuyao.tank.Bullet;
 import com.liuyao.tank.Tank;
-import com.liuyao.tank.TankFrame;
-import com.liuyao.tank.enumm.Dir;
-import com.liuyao.tank.enumm.Group;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 // 默认前方的子弹
-public class BulletStrategy1 implements BulletStrategy{
+public class FireStrategy1 implements FireStrategy {
 
-    private static BulletStrategy1 instance = new BulletStrategy1();
+    private static FireStrategy1 instance = new FireStrategy1();
 
-    private BulletStrategy1() {}
+    private FireStrategy1() {}
 
-    public synchronized static BulletStrategy1 neww(){
+    public synchronized static FireStrategy1 neww(){
         return instance;
     }
 
     @Override
-    public void action(Tank tank) {
+    public void fire(Tank tank) {
         BufferedImage bimg;
         switch (tank.getDir()){
             case LEFT: bimg = Bullet.bulletL; break;

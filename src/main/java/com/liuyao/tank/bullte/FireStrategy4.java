@@ -7,18 +7,18 @@ import com.liuyao.tank.enumm.Dir;
 import com.liuyao.tank.enumm.Group;
 
 // 四个方向的子弹
-public class BulletStrategy4 implements BulletStrategy{
+public class FireStrategy4 implements FireStrategy {
 
-    private static BulletStrategy4 instance = new BulletStrategy4();
+    private static FireStrategy4 instance = new FireStrategy4();
 
-    private BulletStrategy4() {}
+    private FireStrategy4() {}
 
-    public synchronized static BulletStrategy4 neww(){
+    public synchronized static FireStrategy4 neww(){
         return instance;
     }
 
     @Override
-    public void action(Tank tank) {
+    public void fire(Tank tank) {
         int x = tank.getX();
         int y = tank.getY();
         TankFrame tf = tank.getTankFrame();

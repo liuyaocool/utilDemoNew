@@ -1,8 +1,7 @@
 package com.liuyao.tank;
 
-import com.liuyao.tank.bullte.BulletStrategy;
-import com.liuyao.tank.bullte.BulletStrategy1;
-import com.liuyao.tank.bullte.BulletStrategy4;
+import com.liuyao.tank.bullte.FireStrategy1;
+import com.liuyao.tank.bullte.FireStrategy4;
 import com.liuyao.tank.enumm.Dir;
 import com.liuyao.tank.enumm.Group;
 
@@ -119,8 +118,8 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_RIGHT: bR = false; break;
                 case KeyEvent.VK_DOWN: bD = false; break;
                 case KeyEvent.VK_Q: myTank.fire();break;
-                case KeyEvent.VK_1: myTank.setBulletStrategy(BulletStrategy1.neww());break;
-                case KeyEvent.VK_2: myTank.setBulletStrategy(BulletStrategy4.neww());break;
+                case KeyEvent.VK_1: myTank.setBulletStrategy(FireStrategy1.neww());break;
+                case KeyEvent.VK_2: myTank.setBulletStrategy(FireStrategy4.neww());break;
                 default: break;
             }
             setMainDir();

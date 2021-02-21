@@ -1,7 +1,7 @@
 package com.liuyao.tank;
 
-import com.liuyao.tank.bullte.BulletStrategy;
-import com.liuyao.tank.bullte.BulletStrategy1;
+import com.liuyao.tank.bullte.FireStrategy;
+import com.liuyao.tank.bullte.FireStrategy1;
 import com.liuyao.tank.enumm.Dir;
 import com.liuyao.tank.enumm.Group;
 
@@ -25,14 +25,14 @@ public class Tank extends TankParent {
     private Dir dir = Dir.DOWN;
     private boolean moving = true;
     private Random random = new Random();
-    private BulletStrategy bulletStrategy = BulletStrategy1.neww();
+    private FireStrategy bulletStrategy = FireStrategy1.neww();
 
     public Dir getDir() { return dir; }
     public void setDir(Dir dir) { this.dir = dir; }
     public boolean getMoving() { return moving; }
     public void setMoving(boolean moving) { this.moving = moving; }
-    public BulletStrategy getBulletStrategy() { return bulletStrategy; }
-    public void setBulletStrategy(BulletStrategy bulletStrategy) { this.bulletStrategy = bulletStrategy; }
+    public FireStrategy getBulletStrategy() { return bulletStrategy; }
+    public void setBulletStrategy(FireStrategy bulletStrategy) { this.bulletStrategy = bulletStrategy; }
 
     public Tank(int x, int y, Dir dir, TankFrame tf, Group group) {
         super(tf, x, y);
@@ -107,6 +107,6 @@ public class Tank extends TankParent {
     }
 
     public void fire() {
-        bulletStrategy.action(this);
+        bulletStrategy.fire(this);
     }
 }
