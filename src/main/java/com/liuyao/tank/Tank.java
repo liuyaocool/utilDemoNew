@@ -1,5 +1,7 @@
 package com.liuyao.tank;
 
+import com.liuyao.tank.bullte.BulletStrategy;
+import com.liuyao.tank.bullte.BulletStrategy1;
 import com.liuyao.tank.enumm.Dir;
 import com.liuyao.tank.enumm.Group;
 
@@ -19,19 +21,26 @@ public class Tank extends TankParent {
             badTankR = rotateImage(badTankU, 90),
             badTankD = rotateImage(badTankU, 180);
 
+
     private Dir dir = Dir.DOWN;
     private boolean moving = true;
     private Random random = new Random();
+    private BulletStrategy bulletStrategy = BulletStrategy1.neww();
 
     public Dir getDir() { return dir; }
     public void setDir(Dir dir) { this.dir = dir; }
-    public boolean isMoving() { return moving; }
+    public boolean getMoving() { return moving; }
     public void setMoving(boolean moving) { this.moving = moving; }
+    public BulletStrategy getBulletStrategy() { return bulletStrategy; }
+    public void setBulletStrategy(BulletStrategy bulletStrategy) { this.bulletStrategy = bulletStrategy; }
 
     public Tank(int x, int y, Dir dir, TankFrame tf, Group group) {
         super(tf, x, y);
         this.dir = dir;
         this.group = group;
+        if (Group.GOOD == this.group){
+            this.moving = false;
+        }
     }
 
     public void paint(Graphics g) {
@@ -98,17 +107,6 @@ public class Tank extends TankParent {
     }
 
     public void fire() {
-        BufferedImage bimg;
-        switch (this.dir){
-            case LEFT: bimg = Bullet.bulletL; break;
-            case UP: bimg = Bullet.bulletU; break;
-            case RIGHT: bimg = Bullet.bulletR; break;
-            case DOWN: bimg = Bullet.bulletD; break;
-            default: return;
-        }
-        int bx = this.x + this.width/2 - bimg.getWidth()/2;
-        int by = this.y + this.height/2 - bimg.getHeight()/2;
-        Bullet b = new Bullet(bx, by, this.dir, this.tankFrame, this.group);
-        this.tankFrame.bullets.add(b);
+        bulletStrategy.action(this);
     }
 }

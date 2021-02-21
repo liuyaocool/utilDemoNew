@@ -35,4 +35,37 @@ public abstract class TankParent extends ImgUtil{
     };
 
     public abstract void paint(Graphics g);
+
+    //=================== normal get set ===============
+    public TankFrame getTankFrame() {
+        return tankFrame;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean isLiving() {
+        return living;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
 }
