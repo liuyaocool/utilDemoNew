@@ -5,6 +5,7 @@ import com.liuyao.tank.enumm.Group;
 
 public class Start {
 
+    // 进度 第7节 第1部分 00:00
     public static void main(String[] args) {
         // 窗口类
         TankFrame tf = new TankFrame();

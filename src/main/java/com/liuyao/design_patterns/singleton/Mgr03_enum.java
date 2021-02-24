@@ -6,7 +6,7 @@ package com.liuyao.design_patterns.singleton;
  *  反序列化：只会反实例化INSTANCE，仍然是Mgr03，依旧是单例
  * <<effective java>>
  */
-public enum Mgr03 {
+public enum Mgr03_enum {
 
     INSTANCE;
 
@@ -15,7 +15,7 @@ public enum Mgr03 {
     public static void main(String[] args) {
         for(int i=0; i<100; i++) {
             new Thread(()->{
-                System.out.println(Mgr03.INSTANCE.hashCode());
+                System.out.println(Mgr03_enum.INSTANCE.hashCode());
             }).start();
         }
     }
