@@ -17,3 +17,13 @@
   </form>
   ```
 
+# js
+
+- 获取request 值
+
+  ```js
+  var xx = "[[${session.xx}]]"; // 获取session中的值
+  var yy = "[[${yy}]]"; // 获取model中的值
+  ```
+
+  
