@@ -18,11 +18,6 @@ public class GoodTank extends FacTank {
             r = ImgUtil.rotateImage(u, 90),
             d = ImgUtil.rotateImage(u, 180);
 
-    protected FacFireStrategy bulletStrategy = FacFireStrategy1.neww();
-
-    public FacFireStrategy getBulletStrategy() { return bulletStrategy; }
-    public void setBulletStrategy(FacFireStrategy bulletStrategy) { this.bulletStrategy = bulletStrategy; }
-
     public GoodTank(TankFrame tankFrame, int x, int y) {
         super(tankFrame, x, y);
         this.group = Group.GOOD;
@@ -63,7 +58,6 @@ public class GoodTank extends FacTank {
         }
         // 边界检测
         boundsCheck();
-
         updateRect();
     }
 

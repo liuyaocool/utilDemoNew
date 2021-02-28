@@ -2,6 +2,8 @@ package com.liuyao.tankFactory.factory;
 
 import com.liuyao.tank.TankFrame;
 import com.liuyao.tank.enumm.Dir;
+import com.liuyao.tankFactory.Strategy.FacFireStrategy;
+import com.liuyao.tankFactory.Strategy.FacFireStrategy1;
 
 import java.util.Random;
 
@@ -10,7 +12,10 @@ public abstract class FacTank extends FacTankParent {
 
     protected Dir dir = Dir.DOWN;
     protected boolean moving = true;
+    protected FacFireStrategy bulletStrategy = FacFireStrategy1.neww();
 
+    public FacFireStrategy getBulletStrategy() { return bulletStrategy; }
+    public void setBulletStrategy(FacFireStrategy bulletStrategy) { this.bulletStrategy = bulletStrategy; }
     public Dir getDir() { return dir; }
     public void setDir(Dir dir) { this.dir = dir; }
     public boolean getMoving() { return moving; }
