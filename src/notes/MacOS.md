@@ -18,3 +18,11 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 - nc -zv 192.168.1.2 8080-8090    --端口扫描
 
+# 用户操作
+
+- su  --切换root用户
+- su username
+
+# 权限
+
+- sudo + 命令  --以root权限执行命令
