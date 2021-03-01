@@ -283,6 +283,63 @@ persist-tun
 - chkconfig openvpn on
 - /etc/init.d/openvpn start
 
+## 服务端开启nat功能 ??
+
+***见pptp***
+
+客户端拨入OpenVPN后，默认网关会指向OpenVPN服务器，为了能使客户端可以上网，需要在服务端开启nat功能
+首先，打开ip forward功能
+
+```
+sed -i '/net.ipv4.ip_forward/s/0/1/g' /etc/sysctl.conf 
+sysctl -w net.ipv4.ip_forward=1
+
+或
+vi /etc/sysctl.conf
+	net.ipv4.ip_forward = 1 #开启路由模式
+	/sbin/sysctl -p  #使设置立刻生效
+```
+
+然后，配置iptables snat
+
+```
+iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -j SNAT --to-source SERVER_I或?
+
+或 ??
+iptables -t nat -A POSTROUTING -s 192.168.2.0/24  -o eth0  -j MASQUERADE
+/etc/init.d/iptables save #保存防火墙设置
+/etc/init.d/iptables restart #重启防火墙
+chkconfig iptables on #设置开机启动
+```
+
+将SERVER_IP替换为服务器的出口ip
+
+## 吊销证书 ??
+
+```
+cd /etc/open***/easy-rsa/easyrsa3
+./easyrsa revoke targetkey(证书名)
+./easyrsa gen-crl
+其中gen-crl会生成一份吊销证书的名单，放在/etc/open***/easy-rsa/easyrsa3/pki/crl.pem文件里
+
+最后再server.conf文件中增加此项：
+crl-verify /etc/open***/easy-rsa/easyrsa3/pki/crl.pem
+特别说明：吊销的证书不会立刻被删除文件，所以要再次创建相同的证书则要删除crt文件，通常放在pki/issued文件夹下。
+```
+
+或
+
+```
+#cd /opt/open***/easy-rsa/2.0/
+#source vars                 #全局变量
+#./revoke-full client        #会在keys目录下生成一个crl.pem文件
+#cp keys/crl.pem /opt/open***/keys/        #每次吊销一个客户端证书，都要重新拷贝覆盖crl.pem文件
+vim /opt/open***/server.conf              #在最后添加：crl-verify keys/crl.pem
+/etc/init.d/open***  restart
+```
+
+
+
 # MAC 连接 openvpn
 
 mac 版本 Big Sur 11.0.1
@@ -302,6 +359,7 @@ mac 版本 Big Sur 11.0.1
 - 下载安装即可使用
 - 使用注意点
   - 配置文件见Tunnelblick config.ovpn
+  - 配置文件可参考windows版
   - dev un
 
 https://swupdate.openvpn.net/downloads/connect/openvpn-connect-3.2.5.2468_signed.dmg
@@ -344,6 +402,38 @@ https://tunnelblick.net/downloads.html    stable 稳定版
 - 双击 "xxx.tblk"
 
 - 选择 "只是我"
+
+# Windows 连接 openvpn
+
+到[http://openvpn.se/download.html] 下载gui版的OpenVPN，按照提示安装完成后，进入到安装目录，如`D:\Program Files\OpenVPN`。将Linux服务端使用easy-rsa产生的客户端证书、私钥和ca证书下载到本地。即需要下载到本地的文件如下：
+
+```
+/etc/openvpn/easy-rsa/2.0/keys/ca.crt       #ca证书
+/etc/openvpn/easy-rsa/2.0/keys/client.crt   #客户端证书
+/etc/openvpn/easy-rsa/2.0/keys/client.key   #客户端私钥
+```
+
+将这些文件下载到`D:\Program Files\OpenVPN\config`下。
+编辑客户端OpenVPN配置文件client.ovpn，内容如下：
+
+```
+client
+dev tun
+proto udp
+remote SERVER_IP 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+ca ca.crt
+cert client.crt
+key client.key
+comp-lzo
+verb 3
+redirect-gateway def1
+route-method exe
+route-delay 2
+```
 
 # openvpn.conf
 
