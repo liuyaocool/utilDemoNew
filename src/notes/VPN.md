@@ -218,20 +218,25 @@
   - ./easyrsa gen-dh  #创建Diffie-Hellman 过程较长
 
 - client 生成证书
+
   - cd /etc/openvpn/client
   - ./easyrsa init-pki
   - ./easyrsa gen-req xxx 
     - xxx 自定义名字
     - 需要创建一个密码  和 cn name，**自己用的 需要记住**
     - ./pki/reqs/xxx.req    ./pki/private/xxx.key  --生成的两个文件
+
 - 客户端签约服务
+
   - cd /etc/openvpn/server
   - ./easyrsa import-req /etc/openvpn/client/pki/reqs/xxx.req xxx  #导入req
   - ./easyrsa sign client xxx 
     - 用户签约
     - 输入yes
     - 根据提示输入服务端的ca密码
+
 - 最终文件
+
   - server
     - ./server/pki/ca.crt
     - ./server/pki/private/server.key 
@@ -248,7 +253,7 @@
 
 ```
 port        1194
-proto       udp		# 协议 udp tcp
+proto       tcp		# 协议 udp tcp
 
 # "dev tun"将会创建一个路由IP隧道，
 # "dev tap"将会创建一个以太网隧道。
@@ -278,14 +283,32 @@ persist-tun
 - chkconfig openvpn on
 - /etc/init.d/openvpn start
 
-## MAC 连接
+# MAC 连接 openvpn
+
+mac 版本 Big Sur 11.0.1
 
 - 某些mac /dev下没有tun/tap虚拟网络设备 需要安装
+  - http://tuntaposx.sourceforge.net/download.xhtml
+  - 注意安装之前先重启系统，否则可能安装不成功
 
-- 下载 Tunnelblick
+## openvpn-connect  
 
-  - https://tunnelblick.net/downloads.html
-  - stable 稳定版
+2021-03-01 可用
+
+- brew serarch openvpn
+- 会发现一个openvpn-connect  
+- brew install openvpn-connect    --需要翻墙
+- 报错后有一个文件链接，复制后用迅雷可下载
+- 下载安装即可使用
+- 使用注意点
+  - 配置文件见Tunnelblick config.ovpn
+  - dev un
+
+https://swupdate.openvpn.net/downloads/connect/openvpn-connect-3.2.5.2468_signed.dmg
+
+## Tunnelblick
+
+https://tunnelblick.net/downloads.html    stable 稳定版
 
 - 安装完成 选择 "我没有配置文件"
 
@@ -301,16 +324,16 @@ persist-tun
 
   - ```
     client
-    dev tap
+    dev tun
     proto tcp
-    remote 115.239.210.27 444
+    remote xxx.xxx.xxx.xxx 1194
     resolv-retry infinite
     nobind
     persist-key
     persist-tun
     ca ca.crt
-    cert client_mac.crt
-    key client_mac.key
+    cert lvopenvpnclient.crt
+    key lvopenvpnclient.key
     ns-cert-type server
     comp-lzo
     verb 3
@@ -323,6 +346,12 @@ persist-tun
 - 选择 "只是我"
 
 # openvpn.conf
+
+```
+# ; 都是注释
+```
+
+
 
 ```
 #################################################
