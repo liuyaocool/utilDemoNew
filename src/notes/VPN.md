@@ -162,7 +162,11 @@
 
 # openvpn
 
+搭建教程: http://www.linuxfly.org/post/84/ 
+
 安全
+
+**OpenVPN是基于SSL/TLS协议的，所以是不兼容IPSec和PPTP，在Windows也需要安装客户端。**
 
 默认配置文件位置: /etc/openvpn/*.conf
 
@@ -280,8 +284,11 @@ persist-tun
 
 ## 启动
 
-- chkconfig openvpn on
-- /etc/init.d/openvpn start
+- openvpn server.conf
+
+- ??
+  - chkconfig openvpn on
+  - /etc/init.d/openvpn start
 
 ## 服务端开启nat功能 ??
 
@@ -441,7 +448,7 @@ route-delay 2
 # ; 都是注释
 ```
 
-
+## server.conf
 
 ```
 #################################################
@@ -452,13 +459,11 @@ route-delay 2
 # OpenVPN也支持单机<->单机的配置(更多信息请查看网站上的示例页面)
 #
 # 该配置支持Windows或者Linux/BSD系统。此外，在Windows上，记得将路径加上双引号，
-# 并且使用两个反斜杠，例如："C:\\Program Files\\OpenVPN\\config\\foo.key"
+# 并且使用两个反斜杠，例如："C:\\ProgramFiles\\OpenVPN\\config\\foo.key"
 #
-# '#' or ';'开头的均为注释内容
 #################################################
 
-#OpenVPN应该监听本机的哪些IP地址？
-#该命令是可选的，如果不设置，则默认监听本机的所有IP地址。
+# 可选 监听本机的哪些IP地址: 设置监听IP，默认是监听所有IP
 ;local a.b.c.d
 
 # OpenVPN应该监听哪个TCP/UDP端口？
@@ -470,10 +475,9 @@ port 1194
 ;proto tcp
 proto udp
 
-# 指定OpenVPN创建的通信隧道类型。
-# "dev tun"将会创建一个路由IP隧道，
-# "dev tap"将会创建一个以太网隧道。
-#
+# "dev tun"创建一个路由IP隧道，路由IP容易控制，所以推荐使用它；
+# "dev tap"创建一个以太网隧道。但如果如IPX等必须使用第二层才能通过的通讯，则可以用tap方式，tap也就是以太网桥接
+# 
 # 如果你是以太网桥接模式，并且提前创建了一个名为"tap0"的与以太网接口进行桥接的虚拟接口，则你可以使用"dev tap0"
 #
 # 如果你想控制VPN的访问策略，你必须为TUN/TAP接口创建防火墙规则。
@@ -481,12 +485,12 @@ proto udp
 # 在非Windows系统中，你可以给出明确的单位编号(unit number)，例如"tun0"。
 # 在Windows中，你也可以使用"dev-node"。
 # 在多数系统中，除非你部分禁用或者完全禁用了TUN/TAP接口的防火墙，否则VPN将不起作用。
-;dev tap
 dev tun
 
 # 如果你想配置多个隧道，你需要用到网络连接面板中TAP-Win32适配器的名称(例如"MyTap")。
 # 在XP SP2或更高版本的系统中，你可能需要有选择地禁用掉针对TAP适配器的防火墙
 # 通常情况下，非Windows系统则不需要该指令。
+# 即: Windows需要给网卡一个名称，这里设置，linux不需要
 ;dev-node MyTap
 
 # 设置SSL/TLS根证书(ca)、证书(cert)和私钥(key)。
@@ -502,19 +506,21 @@ ca ca.crt
 cert server.crt
 key server.key  # 该文件应该保密
 
-# 指定迪菲·赫尔曼参数。
+# 指定迪菲·赫尔曼参数。 Diffie hellman parameters.
 # 你可以使用如下名称命令生成你的参数：
 #   openssl dhparam -out dh1024.pem 1024
 # 如果你使用的是2048位密钥，使用2048替换其中的1024。
 dh dh1024.pem
 
 # 设置服务器端模式，并提供一个VPN子网，以便于从中为客户端分配IP地址。
-# 在此处的示例中，服务器端自身将占用10.8.0.1，其他的将提供客户端使用。
-# 如果你使用的是以太网桥接模式，请注释掉该行。更多信息请查看官方手册页面。
+# 此示例，服务器端自身将占用10.8.0.1，其他的将提供客户端使用。
+# 如果使用的是以太网桥接模式，注释掉该行。
+# 即: 配置VPN使用的网段，OpenVPN会自动提供基于该网段的DHCP服务，但不能和任何一方的局域网段重复，保证唯一
 server 10.8.0.0 255.255.255.0
 
 # 指定用于记录客户端和虚拟IP地址的关联关系的文件。
 # 当重启OpenVPN时，再次连接的客户端将分配到与上一次分配相同的虚拟IP地址
+# 即: 维持一个客户端和virtual IP的对应表，以方便客户端重新连接可以获得同样的IP
 ifconfig-pool-persist ipp.txt
 
 # 该指令仅针对以太网桥接模式。
@@ -530,11 +536,14 @@ ifconfig-pool-persist ipp.txt
 #
 # 在此之前，你也需要先将以太网网卡接口和TAP接口进行桥接。
 # 注意：该指令仅用于OpenVPN客户端，并且该客户端的TAP适配器需要绑定到一个DHCP客户端上。
+# 即: 配置为以太网桥模式,但需要使用系统的桥接功能 这里不需要使用
 ;server-bridge
 
 # 推送路由信息到客户端，以允许客户端能够连接到服务器背后的其他私有子网。
 # (简而言之，就是允许客户端访问VPN服务器自身所在的其他局域网)
 # 记住，这些私有子网也要将OpenVPN客户端的地址池(10.8.0.0/255.255.255.0)反馈回OpenVPN服务器。
+# 即: 为客户端创建对应的路由,以另其通达公司网内部服务器
+# 但记住，公司网内部服务器也需要有可用路由返回到客户端
 ;push "route 192.168.10.0 255.255.255.0"
 ;push "route 192.168.20.0 255.255.255.0"
 
@@ -569,18 +578,25 @@ ifconfig-pool-persist ipp.txt
 # (为确保能正常工作，OpenVPN服务器所在计算机可能需要在TUN/TAP接口与以太网之间使用NAT或桥接技术进行连接)
 ;push "redirect-gateway def1 bypass-dhcp"
 
+# 若客户端希望所有的流量都通过VPN传输,则可以使用该语句
+# 其会自动改变客户端的网关为VPN服务器,推荐关闭
+# 一旦设置，请小心服务端的DHCP设置问题
+;push "redirect-gateway"
+
 # 某些具体的Windows网络设置可以被推送到客户端，例如DNS或WINS服务器地址。
 # 下列地址来自opendns.com提供的Public DNS 服务器。
+# 即: # 用OpenVPN的DHCP功能为客户端提供指定的DNS、WINS等
 ;push "dhcp-option DNS 208.67.222.222"
 ;push "dhcp-option DNS 208.67.220.220"
 
-# 去掉该指令的注释将允许不同的客户端之间相互"可见"(允许客户端之间互相访问)。
-# 默认情况下，客户端只能"看见"服务器。为了确保客户端只能看见服务器，你还可以在服务器端的TUN/TAP接口上设置适当的防火墙规则。
+# 去掉注释将允许客户端之间相互访问。
+# 默认客户端只能"看见"服务器。为了确保客户端只能看见服务器，你还可以在服务器端的TUN/TAP接口上设置适当的防火墙规则。
 ;client-to-client
 
 # 如果多个客户端可能使用相同的证书/私钥文件或Common Name进行连接，那么你可以取消该指令的注释。
 # 建议该指令仅用于测试目的。对于生产使用环境而言，每个客户端都应该拥有自己的证书和私钥。
 # 如果你没有为每个客户端分别生成Common Name唯一的证书/私钥，你可以取消该行的注释(但不推荐这样做)。
+# 即: 去掉注释, 则相同Common Name的客户端都可以登陆
 ;duplicate-cn
 
 # keepalive指令将导致类似于ping命令的消息被来回发送，以便于服务器端和客户端知道对方何时被关闭。
@@ -603,6 +619,7 @@ keepalive 10 120
 
 # 在VPN连接上启用压缩。
 # 如果你在此处启用了该指令，那么也应该在每个客户端配置文件中启用它。
+# 即: 使用lzo压缩的通讯,服务端和客户端都必须配置
 comp-lzo
 
 # 允许并发连接的客户端的最大数量
@@ -610,6 +627,7 @@ comp-lzo
 
 # 在完成初始化工作之后，降低OpenVPN守护进程的权限是个不错的主意。
 # 该指令仅限于非Windows系统中使用。
+# 即: 让OpenVPN以nobody用户和组来运行（安全）
 ;user nobody
 ;group nobody
 
@@ -644,7 +662,107 @@ verb 3
 # explicit-exit-notify 1
 ```
 
-- Tunnelblick config.ovpn
+## client.server
+
+```
+# 2006-08-11 由linuxing编写
+# #号和;号都是注释
+
+# 定义是一个客户端
+client
+
+# 定义使用路由IP模式，与服务端一致
+;dev tap
+dev tun
+
+# 定义Windows下使用的网卡名称,linux不需要
+;dev-node MyTap
+
+# 定义使用的协议，与服务端一致
+;proto tcp
+proto udp
+
+# 指定服务端地址和端口,可以用多行指定多台服务器
+# 实现负载均衡（从上往下尝试）
+remote 192.168.228.155 1194
+;remote my-server-2 1194
+
+# 若上面配置了多台服务器，让客户端随机连接
+;remote-random
+
+# 解析服务器域名
+# Keep trying indefinitely to resolve the
+# host name of the OpenVPN server.  Very useful
+# on machines which are not permanently connected
+# to the internet such as laptops.
+resolv-retry infinite
+
+# 客户端不需要绑定端口
+# Most clients do not need to bind to
+# a specific local port number.
+nobind
+
+# 也是为了让Openvpn也nobody运行（安全）
+# 注意：Windows不能设置
+;user nobody
+;group nobody
+
+# Try to preserve some state across restarts.
+persist-key
+persist-tun
+
+# 若客户端通过HTTP Proxy，在这里设置
+# 要使用Proxy，不能使用UDP为VPN的通讯协议
+;http-proxy-retry # retry on connection failures
+;http-proxy [proxy server] [proxy port #]
+
+# 无线网络有很多多余的头文件，设置忽略它
+;mute-replay-warnings
+
+# 重点，就是指定ca和客户端的证书
+ca ./easy-rsa/keys/ca.crt
+cert ./easy-rsa/keys/client1.crt
+key ./easy-rsa/keys/client1.key
+
+# 如果服务端打开了PAM认证模块，客户端需要另其有效
+;auth-user-pass
+
+# 一些安全措施
+# Verify server certificate by checking
+# that the certicate has the nsCertType
+# field set to "server".  This is an
+# important precaution to protect against
+# a potential attack discussed here:
+#  http://openvpn.net/howto.html#mitm
+#
+# To use this feature, you will need to generate
+# your server certificates with the nsCertType
+# field set to "server".  The build-key-server
+# script in the easy-rsa folder will do this.
+;ns-cert-type server
+
+# If a tls-auth key is used on the server
+# then every client must also have the key.
+;tls-auth ta.key 1
+
+# Select a cryptographic cipher.
+# If the cipher option is used on the server
+# then you must also specify it here.
+;cipher x
+
+# 使用lzo压缩，与服务端一致
+comp-lzo
+
+# Set log file verbosity.
+verb 3
+
+# Silence repeating messages
+;mute 20
+```
+
+
+
+## Tunnelblick config.ovpn
 
 ```
 ##############################################
