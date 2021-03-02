@@ -11,7 +11,7 @@ import com.liuyao.tank.enumm.Group;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BadTank extends FacTank {
+public class AutoTank extends FacTank {
 
     private static final int SPEED = 5;
     protected static BufferedImage u = ImgUtil.readImg("BadTank.png"),
@@ -21,9 +21,10 @@ public class BadTank extends FacTank {
 
     protected FacFireStrategy bulletStrategy = FacFireStrategy1.neww();
 
-    public BadTank(FacTankFrame tankFrame, FacSkinFactory factory) {
+    public AutoTank(FacTankFrame tankFrame, FacSkinFactory factory) {
         super(tankFrame, factory, RANDOM.nextInt(tankFrame.getWidth() - u.getWidth()), 20);
         this.dir = Dir.values()[RANDOM.nextInt(4)];
+        this.group = Group.AUTO;
     }
 
     @Override

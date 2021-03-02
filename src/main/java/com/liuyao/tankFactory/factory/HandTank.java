@@ -10,7 +10,7 @@ import com.liuyao.tank.enumm.Group;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class GoodTank extends FacTank {
+public class HandTank extends FacTank {
 
     private static final int SPEED = 5;
     protected static BufferedImage u = ImgUtil.readImg("GoodTank.png"),
@@ -18,11 +18,12 @@ public class GoodTank extends FacTank {
             r = ImgUtil.rotateImage(u, 90),
             d = ImgUtil.rotateImage(u, 180);
 
-    public GoodTank(FacTankFrame tankFrame, FacSkinFactory factory, int x, int y, Dir dir) {
+    public HandTank(FacTankFrame tankFrame, FacSkinFactory factory, int x, int y, Dir dir) {
         super(tankFrame, factory, x, y);
-        this.group = Group.GOOD;
-        this.moving = false;
+        this.factory = factory;
+        this.group = Group.HAND;
         this.dir = dir;
+        this.moving = false;
     }
 
     public void paint(Graphics g) {

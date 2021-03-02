@@ -18,13 +18,9 @@ public class FacFireStrategy4 implements FacFireStrategy {
 
     @Override
     public void fire(FacTank tank) {
-        int x = tank.getX();
-        int y = tank.getY();
-        FacTankFrame tf = tank.getTankFrame();
-        Group group = tank.getGroup();
-        tank.getTankFrame().bullets.add(new Bullet(x, y, Dir.LEFT, tf, group));
-        tank.getTankFrame().bullets.add(new Bullet(x, y, Dir.UP, tf, group));
-        tank.getTankFrame().bullets.add(new Bullet(x, y, Dir.RIGHT, tf, group));
-        tank.getTankFrame().bullets.add(new Bullet(x, y, Dir.DOWN, tf, group));
+        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.DOWN));
+        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.UP));
+        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.RIGHT));
+        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.LEFT));
     }
 }

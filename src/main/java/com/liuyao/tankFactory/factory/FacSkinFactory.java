@@ -1,5 +1,6 @@
 package com.liuyao.tankFactory.factory;
 
+import com.liuyao.tank.enumm.Dir;
 import com.liuyao.tankFactory.FacTankFrame;
 
 /**
@@ -7,7 +8,7 @@ import com.liuyao.tankFactory.FacTankFrame;
  *
  */
 public abstract class FacSkinFactory {
-    public abstract FacTank createTank(FacTankFrame facTankFrame);
-    public abstract FacBullet createBullet(FacTankFrame facTankFrame);
-    public abstract FacExplode createExplode(FacTankFrame facTankFrame, int x, int y);
+    public abstract FacTank createTank(FacTankFrame tf);
+    public abstract FacBullet createBullet(FacTankFrame tf, int x, int y, Dir dir);
+    public abstract FacExplode createExplode(FacTankFrame tf, int x, int y) ;
 }

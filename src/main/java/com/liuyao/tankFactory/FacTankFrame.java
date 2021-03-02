@@ -17,13 +17,12 @@ public class FacTankFrame extends Frame {
     public static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
 
     private FacTank myTank;
-    private FacSkinFactory goodFactory;
     // 只是用来保存面板的东西
     public ArrayList<FacBullet> bullets = new ArrayList<>();
     public ArrayList<FacTank> tanks = new ArrayList<>();
     public ArrayList<FacExplode> explodes = new ArrayList<>();
 
-    public FacTankFrame(FacSkinFactory goodfactory) throws HeadlessException {
+    public FacTankFrame(FacSkinFactory factory) throws HeadlessException {
         this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setResizable(false);
         this.setTitle("tankf war(fac)");
@@ -34,8 +33,7 @@ public class FacTankFrame extends Frame {
             public void windowClosing(WindowEvent e) { System.exit(0); }
         });
 
-        this.goodFactory = goodfactory;
-        myTank = this.goodFactory.createTank(this);
+        myTank = factory.createTank(this);
     }
 
     Image offScreenImage = null;

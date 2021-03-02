@@ -8,12 +8,12 @@ import java.awt.*;
 
 public abstract class FacTankParent {
 
-    protected FacTankFrame tankFrame;
-    protected FacSkinFactory factory;
-    protected int x, y, width, height;
-    protected boolean living = true;
-    protected Group group;
-    protected Rectangle rectangle;
+    public FacTankFrame tankFrame;
+    public FacSkinFactory factory;
+    public int x, y, width, height;
+    public boolean living = true;
+    public Group group;
+    public Rectangle rectangle;
 
     public FacTankParent(FacTankFrame tankFrame, FacSkinFactory factory, int x, int y) {
         this.tankFrame = tankFrame;
@@ -37,36 +37,4 @@ public abstract class FacTankParent {
 
     public abstract void paint(Graphics g);
 
-    //=================== normal get set ===============
-    public FacTankFrame getTankFrame() {
-        return tankFrame;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public boolean isLiving() {
-        return living;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public Rectangle getRectangle() {
-        return rectangle;
-    }
 }

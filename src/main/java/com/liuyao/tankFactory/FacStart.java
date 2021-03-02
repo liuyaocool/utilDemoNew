@@ -1,22 +1,18 @@
 package com.liuyao.tankFactory;
 
 import com.liuyao.tank.PropertyMgr;
-import com.liuyao.tank.Tank;
-import com.liuyao.tank.TankFrame;
-import com.liuyao.tank.enumm.Dir;
-import com.liuyao.tank.enumm.Group;
-import com.liuyao.tankFactory.factory.BadFactory;
+import com.liuyao.tankFactory.factory.AutoFactory;
 import com.liuyao.tankFactory.factory.FacSkinFactory;
-import com.liuyao.tankFactory.factory.GoodFactory;
+import com.liuyao.tankFactory.factory.HandFactory;
 
 public class FacStart {
 
     // 进度 第7节 第1部分 00:00
     public static void main(String[] args) {
         // 窗口类
-        FacTankFrame tf = new FacTankFrame(new GoodFactory());
+        FacTankFrame tf = new FacTankFrame(new HandFactory());
 
-        FacSkinFactory fac = new BadFactory();
+        FacSkinFactory fac = new AutoFactory();
         int tankcount = Integer.parseInt(PropertyMgr.getProperty("initTankCount"));
         // 初始化敌方坦克
         for (int i = 0; i < tankcount; i++) {

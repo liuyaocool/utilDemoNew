@@ -1,5 +1,5 @@
 package com.liuyao.tank.enumm;
 
 public enum  Group {
-    GOOD, BAD
+    GOOD, BAD, HAND, AUTO
 }

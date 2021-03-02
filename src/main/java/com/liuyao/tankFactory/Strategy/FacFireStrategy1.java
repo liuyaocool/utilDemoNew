@@ -1,6 +1,7 @@
 package com.liuyao.tankFactory.Strategy;
 
 import com.liuyao.tank.Bullet;
+import com.liuyao.tankFactory.factory.FacBullet;
 import com.liuyao.tankFactory.factory.FacTank;
 
 import java.awt.image.BufferedImage;
@@ -16,17 +17,19 @@ public class FacFireStrategy1 implements FacFireStrategy {
 
     @Override
     public void fire(FacTank tank) {
+
+        FacBullet bullet = tank.factory.createBullet(
+                tank.tankFrame, 0, 0, tank.getDir());
         BufferedImage bimg;
         switch (tank.getDir()){
-            case LEFT: bimg = Bullet.bulletL; break;
-            case UP: bimg = Bullet.bulletU; break;
-            case RIGHT: bimg = Bullet.bulletR; break;
-            case DOWN: bimg = Bullet.bulletD; break;
+            case LEFT: bimg = bullet.getImgL(); break;
+            case UP: bimg = bullet.getImgU(); break;
+            case RIGHT: bimg = bullet.getImgR(); break;
+            case DOWN: bimg = bullet.getImgD(); break;
             default: return;
         }
-        int bx = tank.getX() + tank.getWidth()/2 - bimg.getWidth()/2;
-        int by = tank.getY() + tank.getHeight()/2 - bimg.getHeight()/2;
-        Bullet b = new Bullet(bx, by, tank.getDir(), tank.getTankFrame(), tank.getGroup());
-        tank.getTankFrame().bullets.add(b);
+        bullet.x = tank.x + tank.width/2 - bimg.getWidth()/2;
+        bullet.y = tank.y + tank.height/2 - bimg.getHeight()/2;
+        tank.tankFrame.bullets.add(bullet);
     }
 }
