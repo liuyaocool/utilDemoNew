@@ -2,19 +2,22 @@ package com.liuyao.tankFactory.factory;
 
 import com.liuyao.tank.TankFrame;
 import com.liuyao.tank.enumm.Group;
+import com.liuyao.tankFactory.FacTankFrame;
 
 import java.awt.*;
 
 public abstract class FacTankParent {
 
-    protected TankFrame tankFrame;
+    protected FacTankFrame tankFrame;
+    protected FacSkinFactory factory;
     protected int x, y, width, height;
     protected boolean living = true;
     protected Group group;
     protected Rectangle rectangle;
 
-    public FacTankParent(TankFrame tankFrame, int x, int y) {
+    public FacTankParent(FacTankFrame tankFrame, FacSkinFactory factory, int x, int y) {
         this.tankFrame = tankFrame;
+        this.factory = factory;
         this.x = x;
         this.y = y;
     }
@@ -35,7 +38,7 @@ public abstract class FacTankParent {
     public abstract void paint(Graphics g);
 
     //=================== normal get set ===============
-    public TankFrame getTankFrame() {
+    public FacTankFrame getTankFrame() {
         return tankFrame;
     }
 

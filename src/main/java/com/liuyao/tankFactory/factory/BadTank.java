@@ -1,6 +1,7 @@
 package com.liuyao.tankFactory.factory;
 
 import com.liuyao.tank.ImgUtil;
+import com.liuyao.tankFactory.FacTankFrame;
 import com.liuyao.tankFactory.Strategy.FacFireStrategy;
 import com.liuyao.tankFactory.Strategy.FacFireStrategy1;
 import com.liuyao.tank.TankFrame;
@@ -20,8 +21,9 @@ public class BadTank extends FacTank {
 
     protected FacFireStrategy bulletStrategy = FacFireStrategy1.neww();
 
-    public BadTank(TankFrame tankFrame, int x, int y) {
-        super(tankFrame, x, y);
+    public BadTank(FacTankFrame tankFrame, FacSkinFactory factory) {
+        super(tankFrame, factory, RANDOM.nextInt(tankFrame.getWidth() - u.getWidth()), 20);
+        this.dir = Dir.values()[RANDOM.nextInt(4)];
     }
 
     @Override
@@ -38,13 +40,10 @@ public class BadTank extends FacTank {
             case UP: y -= SPEED; break;
             case DOWN: y += SPEED; break;
         }
-        if (this.group == Group.BAD && RANDOM.nextInt(100) > 95) this.fire();
-
-        if (this.group == Group.BAD && RANDOM.nextInt(100) > 95) randomDir();
-
+        if (RANDOM.nextInt(100) > 95) this.fire();
+        if (RANDOM.nextInt(100) > 95) randomDir();
         // 边界检测
         boundsCheck();
-
         updateRect();
     }
 

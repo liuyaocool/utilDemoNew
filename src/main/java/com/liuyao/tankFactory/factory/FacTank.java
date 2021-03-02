@@ -2,6 +2,7 @@ package com.liuyao.tankFactory.factory;
 
 import com.liuyao.tank.TankFrame;
 import com.liuyao.tank.enumm.Dir;
+import com.liuyao.tankFactory.FacTankFrame;
 import com.liuyao.tankFactory.Strategy.FacFireStrategy;
 import com.liuyao.tankFactory.Strategy.FacFireStrategy1;
 
@@ -21,8 +22,8 @@ public abstract class FacTank extends FacTankParent {
     public boolean getMoving() { return moving; }
     public void setMoving(boolean moving) { this.moving = moving; }
 
-    public FacTank(TankFrame tankFrame, int x, int y) {
-        super(tankFrame, x, y);
+    public FacTank(FacTankFrame tankFrame, FacSkinFactory factory, int x, int y) {
+        super(tankFrame, factory, x, y);
     }
 
     protected void boundsCheck() {

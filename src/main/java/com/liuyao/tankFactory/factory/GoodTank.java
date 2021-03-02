@@ -1,9 +1,9 @@
 package com.liuyao.tankFactory.factory;
 
 import com.liuyao.tank.ImgUtil;
+import com.liuyao.tankFactory.FacTankFrame;
 import com.liuyao.tankFactory.Strategy.FacFireStrategy;
 import com.liuyao.tankFactory.Strategy.FacFireStrategy1;
-import com.liuyao.tank.TankFrame;
 import com.liuyao.tank.enumm.Dir;
 import com.liuyao.tank.enumm.Group;
 
@@ -18,16 +18,17 @@ public class GoodTank extends FacTank {
             r = ImgUtil.rotateImage(u, 90),
             d = ImgUtil.rotateImage(u, 180);
 
-    public GoodTank(TankFrame tankFrame, int x, int y) {
-        super(tankFrame, x, y);
+    public GoodTank(FacTankFrame tankFrame, FacSkinFactory factory, int x, int y, Dir dir) {
+        super(tankFrame, factory, x, y);
         this.group = Group.GOOD;
         this.moving = false;
-        this.dir = Dir.DOWN;
+        this.dir = dir;
     }
 
     public void paint(Graphics g) {
         if (!living) {
             tankFrame.tanks.remove(this);
+            return;
         }
         BufferedImage img;
         switch (this.dir) {
