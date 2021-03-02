@@ -290,12 +290,11 @@ persist-tun
   - chkconfig openvpn on
   - /etc/init.d/openvpn start
 
-## 服务端开启nat功能 ??
-
-***见pptp***
+## 服务端开启nat功能
 
 客户端拨入OpenVPN后，默认网关会指向OpenVPN服务器，为了能使客户端可以上网，需要在服务端开启nat功能
-首先，打开ip forward功能
+
+- 首先，打开ip forward功能
 
 ```
 sed -i '/net.ipv4.ip_forward/s/0/1/g' /etc/sysctl.conf 
@@ -307,11 +306,16 @@ vi /etc/sysctl.conf
 	/sbin/sysctl -p  #使设置立刻生效
 ```
 
-然后，配置iptables snat
+- 然后，配置iptables snat
 
 ```
-iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -j SNAT --to-source SERVER_I或?
+# 将SERVER_IP替换为服务器的出口ip
+iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -j SNAT --to-source SERVER_IP
+```
 
+- ***见pptp*** ??
+
+```
 或 ??
 iptables -t nat -A POSTROUTING -s 192.168.2.0/24  -o eth0  -j MASQUERADE
 /etc/init.d/iptables save #保存防火墙设置
@@ -319,7 +323,7 @@ iptables -t nat -A POSTROUTING -s 192.168.2.0/24  -o eth0  -j MASQUERADE
 chkconfig iptables on #设置开机启动
 ```
 
-将SERVER_IP替换为服务器的出口ip
+
 
 ## 吊销证书 ??
 
