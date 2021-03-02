@@ -112,8 +112,15 @@ Centos7 上的安装方法不适用于此版本
 - yum groupinstall "KDE (K Desktop Environment)"
 - or  ??
   - yum install -y kdebase-workspace kdebase kdeadmin kdenetwork kdeutils kde-l10n-Chinese kde-i18n-Chinese wqy-zenhei-fonts cjkuni-uming-fonts cjkuni-ukai-fonts
+- 连接: xinit /usr/bin/startkde --display :1 -- /usr/bin/Xorg :1
+- 卸载:
+  - yum groupremove "KDE (K Desktop Environment)"
+  - yum groupremove "X Window System"
+  - um remove kdepim
 
 # 远程桌面
+
+网不好会不好用
 
 https://www.laozuo.org/2912.html
 
@@ -129,6 +136,15 @@ https://www.laozuo.org/2912.html
 - 启动vnc
 
   - vncserver  →  设置vnc密码
+  - vncserver :1   --??
+
+- 停止vnc
+
+  - vncserver -kill :1
+
+- 查看vnc 相关
+
+  -  ls /root/.vnc/
 
 - 组织vnc进程
 
