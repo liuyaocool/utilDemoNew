@@ -18,9 +18,8 @@ public class FacFireStrategy4 implements FacFireStrategy {
 
     @Override
     public void fire(FacTank tank) {
-        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.DOWN));
-        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.UP));
-        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.RIGHT));
-        tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, Dir.LEFT));
+        for (Dir dir :Dir.values()){
+            tank.tankFrame.bullets.add(tank.factory.createBullet(tank.tankFrame, tank.x, tank.y, dir));
+        }
     }
 }
