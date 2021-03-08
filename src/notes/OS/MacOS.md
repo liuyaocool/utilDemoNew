@@ -26,3 +26,10 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 # 权限
 
 - sudo + 命令  --以root权限执行命令
+
+# 程序操作
+
+## 端口
+
+- 查看：lsof -i:8000
+- 关闭：kill pid
