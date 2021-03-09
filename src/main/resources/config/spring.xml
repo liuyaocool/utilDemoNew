@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="driver" class="com.liuyao.design_patterns.factory.F04_springbeanIOC.Driver"></bean>
+    <bean id="tank" class="com.liuyao.design_patterns.factory.F04_springbeanIOC.Tank">
+        <property name="d" ref="driver"></property>
+    </bean>
+
+</beans>

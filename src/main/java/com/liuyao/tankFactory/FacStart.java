@@ -7,7 +7,6 @@ import com.liuyao.tankFactory.factory.HandFactory;
 
 public class FacStart {
 
-    // 进度 第7节 第1部分 00:00
     public static void main(String[] args) {
         // 窗口类
         FacTankFrame tf = new FacTankFrame(new HandFactory());
