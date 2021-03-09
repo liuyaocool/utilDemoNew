@@ -19,9 +19,7 @@ public class MainSpringIOC {
      * @param args
      */
     public static void main(String[] args) {
-        Driver d = new Driver();
-
         ApplicationContext context = new ClassPathXmlApplicationContext("config/spring.xml");
-        d = (Driver) context.getBean("driver");
+        Driver d = (Driver) context.getBean("driver");
     }
 }
