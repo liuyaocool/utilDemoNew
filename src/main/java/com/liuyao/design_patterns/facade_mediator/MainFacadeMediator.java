@@ -1,6 +1,6 @@
 package com.liuyao.design_patterns.facade_mediator;
 
-public class MainMediator {
+public class MainFacadeMediator {
 
     /**
      * 门面 又叫 外观 facade 对外同一
