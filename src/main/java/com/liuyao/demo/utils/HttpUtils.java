@@ -13,9 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class HttpUtils {
 
@@ -89,8 +87,7 @@ public class HttpUtils {
             //并获得响应数据
             byte[] result;
             if (conn.getResponseCode() == 200) {
-                result = new byte[conn.getInputStream().available()];
-                int read = conn.getInputStream().read(result);
+                return byteResult(conn, 500);
             } else {
                 result = String.valueOf(conn.getResponseCode()).getBytes();
             }
@@ -103,6 +100,33 @@ public class HttpUtils {
             close(osw);
         }
         return null;
+    }
+
+    private static byte[] byteResult(HttpURLConnection conn, Integer timeout) {
+        List<byte[]> ret = new ArrayList<>();
+        int len;
+        int total = 0;
+        byte[] result;
+        try {
+            InputStream is = conn.getInputStream();
+            while ((len = is.available()) > 0) {
+                is.read(result = new byte[len]);
+                ret.add(result);
+                total += len;
+                Thread.sleep(timeout);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result = new byte[total];
+        len = 0;
+        for (byte[] b: ret) {
+            System.arraycopy(b, 0, result, len, b.length);
+            len += b.length;
+        }
+        return result;
     }
 
     public static void fileRequest(String url, Method method, Map<String, File> files) {
