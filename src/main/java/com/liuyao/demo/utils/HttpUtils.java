@@ -58,13 +58,10 @@ public class HttpUtils {
      * @param data
      * @return
      */
-    public static String ajax(String url, Method method, Map<String, String> headers, Map data){
+    public static byte[] ajax(String url, Method method, Map<String, String> headers, Map data){
         Charset encoding = Charset.UTF8;
-        String result = null;
         OutputStreamWriter osw = null;
         try{
-            System.out.println();
-            System.out.println("----------------------- request -----------------------");
             HttpURLConnection conn = getConn(url, method, headers);
 //            System.out.println("param：" + data);
             //添加其他设置
@@ -89,27 +86,26 @@ public class HttpUtils {
             }
             //请求
             conn.connect();
-            System.out.println("----------------------- response ----------------------");
             //并获得响应数据
+            byte[] result;
             if (conn.getResponseCode() == 200) {
-                result = getResult(conn, encoding);
+                result = new byte[conn.getInputStream().available()];
+                int read = conn.getInputStream().read(result);
             } else {
-                result = String.valueOf(conn.getResponseCode());
+                result = String.valueOf(conn.getResponseCode()).getBytes();
             }
-            System.out.println("result："+result);
+            conn.disconnect();
+            return result;
         }catch (Exception e){
 //            e.printStackTrace();
             System.out.println("ERROR：" + e.getMessage());
         }finally {
             close(osw);
         }
-        System.out.println("======================================== over =============================================");
-        return result;
+        return null;
     }
 
     public static void fileRequest(String url, Method method, Map<String, File> files) {
-        System.out.println("=========================请求=================================");
-        System.out.println(url);
         String BOUNDARY = java.util.UUID.randomUUID().toString(),
                 PREFIX = "--",
                 LINEND = "\r\n",
@@ -132,7 +128,6 @@ public class HttpUtils {
             conn.setUseCaches(false);
 
             dos = new DataOutputStream(conn.getOutputStream());
-            System.out.println("---------------------------------------------------");
 
             // 发送文件数据
             if (ObjectUtil.isEmpty(files)){
@@ -146,7 +141,6 @@ public class HttpUtils {
                 sb1.append("Content-Disposition: form-data; name=\"files\"; filename=\"" + file.getKey() + "\"" + LINEND);
                 sb1.append("Content-Type: application/octet-stream; charset=" + encoding + LINEND);
                 sb1.append(LINEND);
-                System.out.println(sb1);
 
                 dos.write(sb1.toString().getBytes());
                 is = new FileInputStream(file.getValue());
@@ -158,22 +152,18 @@ public class HttpUtils {
                 close(is);
                 dos.write(LINEND.getBytes());
             }
-            System.out.println("-------------------------------");
 
             // 请求结束标志
             byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINEND).getBytes();
             dos.write(end_data);
             dos.flush();
 
-            System.out.println("=========================响应=================================");
             // 得到响应码
             System.out.println("responseCode："+conn.getResponseCode());
             if (conn.getResponseCode() == 200) {
                 String result = getResult(conn, encoding);
 
                 com.alibaba.fastjson.JSONObject datas = com.alibaba.fastjson.JSONObject.parseObject(result);
-                System.out.println(datas.getInteger("code"));
-                System.out.println(datas.getString("message"));
                 JSONArray res = datas.getJSONArray("data");
                 for (int i = 0; i < res.size(); i++) {
                     System.out.println(res.get(i));
@@ -190,17 +180,17 @@ public class HttpUtils {
 
     private static HttpURLConnection getConn(String url, Method method,
                                              Map<String, String> headers) throws IOException {
-        System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
         conn.setRequestMethod(method.getMethod());
-        System.out.println("method：" + conn.getRequestMethod());
+        StringBuilder sb = new StringBuilder(conn.getRequestMethod()).append(" ").append(url).append(" ");
         //添加请求头
         if (!ObjectUtil.isEmpty(headers)){
             for(String key: headers.keySet()){
                 conn.setRequestProperty(key, headers.get(key));
-                System.out.println(key + "：" + headers.get(key));
+                sb.append(key).append("=").append(headers.get(key)).append("; ");
             }
         }
+        System.out.println(sb.toString());
         return conn;
     }
 
@@ -249,8 +239,8 @@ public class HttpUtils {
         addr = "http://1770.ztshangwu.com/?channelNo=1770#/video?video_id=153";
         headers.put("Content-Type", "text/html");
         headers.put("User-Agent", "iPhone");
-        String res = ajax(addr, Method.GET, headers, data);
-        System.out.println(res);
+        byte[] res = ajax(addr, Method.GET, headers, data);
+        System.out.println(new String(res));
 //        headers.clear();
 //        doAjax(addr + "getString", Method.GET, headers, data);//ok
 //        doAjax(addr + "getJsonString", Method.GET, headers, data);//ok
