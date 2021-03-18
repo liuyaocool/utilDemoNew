@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>打开微信</title>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+<strong style="padding: 6px 10px;background: #f5fb01;border-radius: 6px;color: #d32a63;">
+    <span style="max-width: 100%; color: rgb(255, 41, 65); box-sizing: border-box !important; word-wrap: break-word !important; background-color: rgb(255, 251, 0);">
+        <span id="target">wx3</span>
+            <button data-clipboard-target="#target" data-clipboard-action="copy" id="copy_btn" style="width: 160px; height: 26px">
+	    <span style="font-size: 13pt">←点击复制微信号</span></button>
+    </span>
+</strong>
+
+<script src="jscboard.min.js"></script>
+<script type="text/javascript">
+
+    window.onload = function () {
+        var clipboard = new Clipboard('#copy_btn');
+        clipboard.on('success', function (e) {
+            alert("微信复制成功，请添加朋友！");
+            window.location.href='weixin://';
+
+            e.clearSelection();
+        });
+    }
+
+</script>
+</body>
+</html>

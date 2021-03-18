@@ -164,12 +164,15 @@ public class IOUtil {
         }
     }
 
-    public static void close(AutoCloseable c){
-        try {
-            if (null != c) c.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void close(AutoCloseable... closes){
+        for (AutoCloseable c: closes){
+            try {
+                if (null != c) c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     /**

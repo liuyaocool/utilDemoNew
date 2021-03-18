@@ -1,7 +1,6 @@
 package com.liuyao.demo.mashibing.thread;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
@@ -24,9 +23,12 @@ public class T12_ThreadPool extends Func{
      *
      */
     public static void main(String[] args) {
-        testFutureTask();
-        testCollableFuture();
-        testCompletableFuture();
+//        testFutureTask();
+//        testCollableFuture();
+//        testCompletableFuture();
+//        testSingleThreadPool();
+//        testFixedThreadPool();
+        testThreadPoolExecutor();
     }
 
     /**
@@ -69,18 +71,64 @@ public class T12_ThreadPool extends Func{
         return true;
     }
 
-    public static void testThreadPool(){
+    public static void testSingleThreadPool(){
+
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>());
+
         // 单线程线程池: 任务队列 生命周期管理
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        for (int i = 0; i < 10; i++) {
+            singleThreadExecutor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + " → single pool start");
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + " → single pool end");
+                }
+            });
+        }
+        singleThreadExecutor.shutdown();
+    }
+
+    public static void testThreadPool(){
         // 加一个线程就马上执行 忽高忽低
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-        // 固定线程数 平稳
-        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
         // 定时任务线程池 quartz cron
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 //        scheduledExecutorService.scheduleAtFixedRate(()->{ }, );
         // 上述是共同访问同一个任务队列
+    }
 
+    public static void testFixedThreadPool(){
+        // 固定线程数 平稳
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
+
+        for (int i = 0; i < 20; i++) {
+            fixedThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + " → fixed pool start");
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println(Thread.currentThread().getName() + " → fixed pool end");
+                }
+            });
+        }
+        System.out.println("fixed add finished");
+        fixedThreadPool.shutdown();
     }
 
     /**
@@ -117,13 +165,16 @@ public class T12_ThreadPool extends Func{
                         '}';
             }
         }
-        ThreadPoolExecutor exe = new ThreadPoolExecutor(2, 4,
+        ThreadPoolExecutor exe = new ThreadPoolExecutor(
+//                2, 4,
+                0, Integer.MAX_VALUE, //newCachedThreadPool
                 60, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(4),
+                new SynchronousQueue<Runnable>(), //newCachedThreadPool
+//                new ArrayBlockingQueue<Runnable>(8),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy());
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 80; i++) {
             exe.execute(new Task(i));
         }
 
@@ -134,6 +185,14 @@ public class T12_ThreadPool extends Func{
         System.out.println(exe.getQueue());
 
         exe.shutdown();
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        System.out.println(exe.getQueue());
+        System.out.println("finished");
     }
 
     /**

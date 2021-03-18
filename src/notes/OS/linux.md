@@ -19,7 +19,9 @@
   - Fedora Core (由原来RedHat桌面版本发展而来, 免费)
   - CentOS (试验场, REHL(第一条)的社区克隆版本, 一些新的 不稳定的程序都在里边, 免费)
 - Debian Linux (唯一 非商业组织维护 功能强大)
-- Ubuntu (基于Debian的unstable版本加强而来)    --常用与日常办公 图形化强大
+- Ubuntu (基于Debian的unstable版本加强而来) 
+  - 常用与日常办公 图形化强大
+  - 安装使用免费 维护服务收费
   - kai
   - deepin  --国产
   - 麒麟  --国产
@@ -54,6 +56,28 @@ yum makcache 出现 Failed to set locale, defaulting to C.UTF-8 错误
 - 安装中文语言包
 
   - yum install glibc-langpack-zh
+
+# 安装
+
+## 分区
+
+- swap 内存交换分区 现在电脑内存足够 不需要了
+- /home ：尽量设置大一点 保证系统崩溃后不丢数据
+- / ：剩余分区
+
+示例：
+
+- ubuntu 2020.10 60GB
+  - /dev/sda1 efi                                 512MB
+  - /dev/sda1 biosgrub                       512MB
+  - /dev/sda1 ext4            /home        40960MB
+  - /dev/sda1 ext4            /                 22439MB
+- 修改root 密码 ：sudo passwd root
+- 安装vmware tools 
+  - cd/dvd 改为使用物理驱动器
+  - 打开系统 解压光盘 ***.tar.gz 到系统
+  - root权限执行 ./VMWare***.pl
+  - ok
 
 # yum
 
