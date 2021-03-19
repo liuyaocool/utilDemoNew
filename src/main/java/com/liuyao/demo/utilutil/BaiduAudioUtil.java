@@ -35,7 +35,13 @@ public class BaiduAudioUtil {
      * 获得token
      */
     private static com.alibaba.fastjson.JSONObject getToken(){
-        String result = HttpUtils.ajax(TOKEN_URL, HttpUtils.Method.GET, null, null);
+        byte[] res = HttpUtils.ajax(TOKEN_URL, HttpUtils.Method.GET, null, null);
+        String result = null;
+        try {
+            result = new String(res, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         System.out.println(result);
         return HttpUtils.toJson(result);
     }
