@@ -122,20 +122,7 @@
             nmcli c up ens33
             nmcli d reapply ens33
             nmcli d connect ens33
-    防火墙
-        centos7+: firewall-cmd
-            firewall-cmd --zone=public --list-ports --查看开放的端口列表
-            firewall-cmd --query-port=3306/tcp --查看防火墙某个端口是否开放
-            <red>firewall-cmd --zone=public --add-port=3306/tcp --permanent --开放端口</red>
-            <red>firewall-cmd --zone=public --add-port=40000-45000/tcp --permanent --开放一段端口</red>
-            firewall-cmd --reload --重启防火墙
-            systemctl start/stop/status firewalld --防火墙操作
-    开放端口 iptables
-        redhat
-            iptables -L -n --查看开放端口
-            iptables --list-rules
-            iptables -A IN_public_allow -p tcp -m tcp --dport 10001 -m conntrack --ctstate NEW -j ACCEPT
-        centos7+ 见防火墙
+
 
     <h2 class="anchor">命令</h2>
     鉴别内部命令 type 例如type cd

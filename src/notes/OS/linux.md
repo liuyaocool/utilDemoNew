@@ -280,7 +280,22 @@ https://www.laozuo.org/2912.html
 
 # 防火墙
 
+## centos 7.0+
 
+- firewall-cmd --zone=public --list-ports --查看开放的端口列表           
+- firewall-cmd --query-port=3306/tcp --查看防火墙某个端口是否开放           
+- firewall-cmd --zone=public --add-port=3306/tcp --permanent --开放端口            
+- firewall-cmd --zone=public --add-port=40000-45000/tcp --permanent --开放一段端口           
+- firewall-cmd --reload --重启防火墙          
+- systemctl start/stop/status firewalld --防火墙操作
+
+## 开放端口 iptables
+
+- redhat
+  - iptables -L -n --查看开放端口
+  - iptables --list-rules           
+  - iptables -A IN_public_allow -p tcp -m tcp --dport 10001 -m conntrack --ctstate NEW -j ACCEPT
+- centos7+ 见防火墙
 
 # 四大组成
 
