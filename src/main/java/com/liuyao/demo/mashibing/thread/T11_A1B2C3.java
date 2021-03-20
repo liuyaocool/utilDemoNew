@@ -1,5 +1,6 @@
 package com.liuyao.demo.mashibing.thread;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -30,6 +31,8 @@ public class T11_A1B2C3 {
 
         Condition c1 = lock.newCondition();
         Condition c2 = lock.newCondition();
+
+//        ArrayBlockingQueue
 
     }
 

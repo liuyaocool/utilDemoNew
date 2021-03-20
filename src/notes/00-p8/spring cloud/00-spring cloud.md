@@ -167,6 +167,10 @@ git 的 文件名 则必须为user-consumer-xxx.xxx
 属性值注入失败 则 配置文件改名为： bootstrap.xxx
 ```
 
+# 会话管理
+
+## Spring Security
+
 
 
 
@@ -192,5 +196,5 @@ git 的 文件名 则必须为user-consumer-xxx.xxx
 - rpc
 - 上下文
 
-# 进度 第10节 0:00:00
+# 进度 第11节 0:14:00
 

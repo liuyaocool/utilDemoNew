@@ -278,6 +278,10 @@ https://www.laozuo.org/2912.html
 
 - 
 
+# 防火墙
+
+
+
 # 四大组成
 
 ( 程序或服务... 	(系统调用接口...	(内核...	(硬件...))))
@@ -370,7 +374,11 @@ fi
 
 ## 压缩
 
-- 解压：tar xf xxx.tar.gz
+- 解压：tar -xf xxx.tar.gz
+  - x    --提取
+  - f    --使用文档
+  - v    --打印解压列表
+  - -C /folder    --解压到指定目录
 - 压缩：tar -zcvf ***.tar.gz /folder
 
 ## 查看系统版本
