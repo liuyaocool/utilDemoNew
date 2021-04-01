@@ -23,6 +23,19 @@ public class T12_ThreadPool extends Func{
      *
      */
     public static void main(String[] args) {
+
+        ScheduledExecutorService pool = Executors.newScheduledThreadPool(20);
+
+        for1:
+        for (;;) {
+
+            for (;;) {
+
+                break for1;
+            }
+        }
+//        ExecutorService executorService = Executors.newScheduledThreadPool();
+
 //        testFutureTask();
 //        testCollableFuture();
 //        testCompletableFuture();
@@ -203,11 +216,12 @@ public class T12_ThreadPool extends Func{
         long start = System.currentTimeMillis();
 
         // 第一种
-        CompletableFuture<Double> f1 = CompletableFuture.supplyAsync(() -> c1());
-        CompletableFuture<Double> f2 = CompletableFuture.supplyAsync(() -> c2());
-        CompletableFuture<Double> f3 = CompletableFuture.supplyAsync(() -> c3());
+        CompletableFuture<Double>[] f = new CompletableFuture[3];
+        f[1] = CompletableFuture.supplyAsync(() -> c1());
+        f[2] = CompletableFuture.supplyAsync(() -> c2());
+        f[3] = CompletableFuture.supplyAsync(() -> c3());
 
-        CompletableFuture.allOf(f1, f2, f3).join();
+        Void join = CompletableFuture.allOf(f[1], f[2], f[3]).join();
 
         // 第二种
         CompletableFuture.supplyAsync(()->c1())

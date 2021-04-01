@@ -90,15 +90,6 @@
     lo网卡: ifconfig 中的 lo 本地环回网卡
         linux内核中虚拟的一张 优先级高于物理网卡(如eth0)-就近原则
         任何能匹配到此网卡(网关与运算)的包 都不会向计算机外部发 会直接返回应用层程序
-    修改主机名 →
-        vi  /etc/sysconfig/network
-            NETWORKING=yes
-            HOSTNAME=lynode01.com
-        vi /etc/hosts
-            127.0.0.1   localhost   localhost.localdomain   localhost4 localhost4.localdomain4
-          → 127.0.0.1   node01      lynode01.com            localhost4 localhost4.localdomain4
-        vi /etc/hostname --centos7之后
-            lynode01.com
     修改hosts文件 → vi /etc/hosts
     修改连接网络方式
         vim /etc/sysconfig/network-scripts/ifcfg-*
@@ -143,25 +134,6 @@
 
     man命令 查看外部命令的帮助文档
     help 查看内部命令的帮助稳稳当文档
-
-    <h2 class="anchor">shell script</h2>
-    1 #! --释伴（SheBang）   https://blog.csdn.net/u012294618/article/details/78427864
-        1）允许脚本和数据文件充当系统命令
-        2）#!/usr/bin/env 解释器 --多平台通用
-        3）用法
-            1、如果脚本文件中没有#!这一行，那么执行时会默认采用当前Shell去解释这个脚本(即：$SHELL环境变量）。
-            2、如果#!之后的解释程序是一个可执行文件，那么执行这个脚本时，它就会把文件名及其参数一起作为参数传给那个解释程序去执行。
-            3、如果#!指定的解释程序没有可执行权限，则会报错“bad interpreter: Permissiondenied”。
-                如果#!指定的解释程序不是一个可执行文件，那么指定的解释程序会被忽略，转而交给当前的SHELL去执行这个脚本。
-            4、如果#!指定的解释程序不存在，那么会报错“bad interpreter: No such file or directory”。
-                注意：#!之后的解释程序，需要写其绝对路径（如：#!/bin/bash），它是不会自动到$PATH中寻找解释器的。
-            5、当然，如果你使用类似于”bash test.sh”这样的命令来执行脚本，那么#!这一行将会被忽略掉，解释器当然是用命令行中显式指定的bash。
-            6、脚本文件必须拥有可执行权限。
-        3）总结
-            #! 必须连接在一起
-            #! 一句必须在文件的最开始，第一行
-            # 开头的语句一般情况下会被当成注释而忽略，所以#!对文件的内容是没有影响的
-            #! 开头的一行会设置解释器运行环境
 
     <h2 class="anchor">bash shell</h2>
     https://www.jb51.net/article/160398.htm

@@ -2,7 +2,7 @@ package com.liuyao.demo.mashibing.thread;
 
 public class T08_ThreadLocal extends Func{
 
-    static ThreadLocal<Person> tl = new ThreadLocal<>();
+    static ThreadLocal<String> tl = new ThreadLocal<>();
 
     public static void main(String[] args) {
         test1();
@@ -16,13 +16,10 @@ public class T08_ThreadLocal extends Func{
 
         new Thread(()->{
             msleep(1000);
-            tl.set(new Person());
+            tl.set("thread2");
         }).start();
+
     }
 
 
-}
-
-class Person{
-    String name = "Tina";
 }

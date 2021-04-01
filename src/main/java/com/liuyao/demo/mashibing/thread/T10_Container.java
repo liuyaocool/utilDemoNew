@@ -1,7 +1,5 @@
 package com.liuyao.demo.mashibing.thread;
 
-import org.apache.batik.dom.util.HashTable;
-
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -12,7 +10,7 @@ import java.util.concurrent.*;
  */
 public class T10_Container {
 
-//    HashTable Vector// 全是加锁的方法
+//    Hashtable; Vector// 全是加锁的方法
 
 //    Map m = Collections.synchronizedMap(new HashMap()); // 插快 读慢
 //    Hashtable // 插快 读慢
@@ -45,6 +43,11 @@ public class T10_Container {
 //    LinkedTransferQueue
 
     public static void main(String[] args) {
+
+        LinkedBlockingQueue<Object> objects = new LinkedBlockingQueue<>();
+        ArrayBlockingQueue arrayBlockingQueue = new ArrayBlockingQueue<>(20);
+        ConcurrentLinkedQueue<Object> objects1 = new ConcurrentLinkedQueue<>();
+        DelayQueue<Delayed> delayeds = new DelayQueue<>();
 
         // 消费过后继续执行
         testLinkedTransferQueue();

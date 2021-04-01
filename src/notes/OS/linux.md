@@ -276,7 +276,21 @@ https://www.laozuo.org/2912.html
 
 - GbE
 
-- 
+## 主机名
+
+- 修改主机名
+  - vi  /etc/sysconfig/network
+    - NETWORKING=yes
+    - HOSTNAME=lynode01.com
+  - vi /etc/hosts
+    - 127.0.0.1   localhost   localhost.localdomain   localhost4 localhost4.localdomain4
+    - 127.0.0.1   node01      lynode01.com            localhost4 localhost4.localdomain4
+  - vi /etc/hostname --centos7之后只需修改这里
+    - lynode01.com
+
+
+
+
 
 # 防火墙
 
@@ -325,9 +339,51 @@ https://www.laozuo.org/2912.html
 
 终端输入 → shell → 调用内核
 
+## 释伴#!
+
+SheBang  脚本解释器
+
+https://blog.csdn.net/u012294618/article/details/78427864
+
+1. 允许脚本和数据文件充当系统命令
+
+2. #!/usr/bin/env 解释器 --多平台通用
+
+3. 用法
+
+   - 脚本文件没有#!这一行，执行时会默认采用当前Shell去解释这个脚本(即：$SHELL环境变量）。
+
+   - #!之后的解释程序是一个可执行文件，执行这个脚本时，它会把文件名及其参数一起作为参数传给那个解释程序去执行。
+
+   - 若#!指定的解释程序没有可执行权限，则会报错“bad interpreter: Permissiondenied”。
+
+   - 若#!指定的解释程序不是一个可执行文件，那么指定的解释程序会被忽略，转而交给当前的SHELL去执行这个脚本。
+
+   - 若#!指定的解释程序不存在，那么会报错“bad interpreter: No such file or directory”。
+
+   - 注意：#!之后的解释程序需写**绝对路径**（如：#!/bin/bash），它是不会自动到$PATH中寻找解释器的。
+
+   - 显式指定bash（如：bash test.sh），#!这一行将会被忽略掉
+
+4. 总结
+
+   - #! 必须连接在一起
+   - #! 一句必须在文件的最开始，第一行
+   - #! 开头的一行会设置解释器运行环境
+   - #! 对文件的内容没有影响，#开头会被当成注释
+
 ## 语法
 
-### if
+### shell参数
+
+例如： start.sh app1 start
+
+- ${0} = start.sh
+- ${1} = app1
+- ${2} = start
+- 。。。
+
+### 判断 if
 
 ```sh
 # 格式
@@ -389,11 +445,13 @@ fi
 
 ## 压缩
 
-- 解压：tar -xf xxx.tar.gz
+- 解压：tar -xf xxx.tar
   - x    --提取
   - f    --使用文档
   - v    --打印解压列表
   - -C /folder    --解压到指定目录
+- 解压：tar -xf xxx.tar.gz
+  - tar -zxvf *.tar.gz
 - 压缩：tar -zcvf ***.tar.gz /folder
 
 ## 查看系统版本

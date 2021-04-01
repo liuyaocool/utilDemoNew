@@ -113,9 +113,13 @@ public class T06_Lock extends Func{
      * 共享锁 排他锁
      */
     private static void testReadWriteLock(){
-        ReadWriteLock rwlock = new ReentrantReadWriteLock();
-        Lock readlock = rwlock.readLock();
-        Lock writelock = rwlock.writeLock();
+//        ReadWriteLock rwlock = new ReentrantReadWriteLock();
+//        Lock readlock = rwlock.readLock();
+//        Lock writelock = rwlock.writeLock();
+
+        StampedLock lock = new StampedLock();
+        Lock readlock = lock.asReadLock();
+        Lock writelock = lock.asWriteLock();
 
         Runnable readr = ()->{
             try {
@@ -200,19 +204,8 @@ public class T06_Lock extends Func{
      * 例：遗传算法
      */
     static class PhaserPerson implements Runnable{
-        static Phaser phaser = new Phaser(){
-            @Override
-            protected boolean onAdvance(int phase, int registeredParties) {
-                switch (phase){
-                    case 0: System.out.println("所有人到齐了：" + registeredParties + "人\n"); return false;
-                    case 1: System.out.println("所有人吃完了：" + registeredParties + "人\n"); return false;
-                    case 2: System.out.println("所有人离开了：" + registeredParties + "人\n"); return false;
-                    case 3: System.out.println("婚礼结束，新郎新娘抱抱：" + registeredParties + "人\n"); return true;
-                    default: return true;
-                }
-            }
-        };
-        public static void test(){
+
+        public static void main(String[] args) {
             int pnum = 5;
             phaser.bulkRegister(pnum + 2);
             for (int i = 0; i < pnum; i++) {
@@ -221,6 +214,20 @@ public class T06_Lock extends Func{
             new Thread(new PhaserPerson("新郎")).start();
             new Thread(new PhaserPerson("新娘")).start();
         }
+
+        static Phaser phaser = new Phaser(){
+            @Override
+            protected boolean onAdvance(int phase, int count) {
+                switch (phase){
+                    case 0: System.out.println("所有人到齐了：" + count + "人\n"); return false;
+                    case 1: System.out.println("所有人吃完了：" + count + "人\n"); return false;
+                    case 2: System.out.println("所有人离开了：" + count + "人\n"); return false;
+                    case 3: System.out.println("婚礼结束，新郎新娘抱抱：" + count + "人\n"); return true;
+                    default: return true;
+                }
+            }
+        };
+
         String name;
         public PhaserPerson(String name) { this.name = name; }
 
@@ -326,10 +333,11 @@ public class T06_Lock extends Func{
         });
 
         t.start();
-        LockSupport.unpark(t);
+//        LockSupport.unpark(t);
 
         msleep(10000);
         System.out.println("main thread sleep 10 seconds.");
-//        LockSupport.unpark(t);
+        LockSupport.unpark(t);
+
     }
 }

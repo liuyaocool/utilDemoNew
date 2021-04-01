@@ -10,7 +10,7 @@ public class Func extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("sleep " + time + " s");
+//        System.out.println("sleep " + time + " s");
     }
 
     public static void log(Object str){
