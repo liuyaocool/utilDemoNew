@@ -30,6 +30,8 @@
 
 #### 图片: ![pic](path)
 
+图片：<img src="linux\BIO.png" align="left">
+
 #### 表格: |标题1|标题2| ....
 
 | t1   | t2   | t3   |

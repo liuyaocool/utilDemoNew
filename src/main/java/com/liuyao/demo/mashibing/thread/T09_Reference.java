@@ -7,8 +7,27 @@ public class T09_Reference extends Func{
 
 
     public static void main(String[] args) {
-        normal();
+        Integer.valueOf(100);
+        Integer a = 200;
+        Integer b = 100;
+        cgInteger(a);
+//        cgInteger(b);
+        System.out.println(a);
+//        System.out.println(b);
+
+        String c = "a";
+        String intern = c.intern();
+
+        System.out.println(c == intern);
+
+//        normal();
     }
+
+    private static void cgInteger(Integer a) {
+        a = 220;
+//        a = new Integer(300);
+    }
+
 
     /**
      * 强引用

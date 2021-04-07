@@ -1,9 +1,62 @@
 # 内核
 
+## 版本号
+
 - XX.YY.ZZ --版本 如 2.5.7
   - XX: 主版本号
   - YY: 奇数表示开发板,偶数表示稳定版
   - ZZ: 升级次数
+
+## man
+
+- yum install man man-pages
+- man ls
+- man 2 read
+- man 2 socket
+
+## BIO
+
+- 同步阻塞
+- socket在这个时期是blocking
+
+<img src="linux\BIO.png" align="left">
+
+## NIO
+
+- 同步非阻塞
+- socket fd nonblock
+- 同步非阻塞  NIO
+- 如果有1000fd，代表用户进程轮询调用1000次kernel
+- 问题：成本问题
+
+<img src="linux\NIO.png" align="left">
+
+## selector
+
+- man 2 select
+- 多路复用 NIO
+- 问题：
+  1. 用户态 内核态 切换
+  2. fd相关数据考来考去
+
+<img src="linux\SELECTOR.png" align="left">
+
+## epoll
+
+- man epoll
+- eventpoll
+- 多路复用 NIO
+- man 2 mmap
+  - 共享空间
+  - 内核空间 映射 用户空间
+
+<img src="linux\EPOLL.png" align="left">
+
+## 零拷贝
+
+- man 2 sendfile
+
+<img src="linux\0COPY.png" align="left">
 
 # 公钥私钥免密登录
 
