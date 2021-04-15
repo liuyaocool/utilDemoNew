@@ -12,9 +12,56 @@ public class T08_ThreadLocal extends Func{
 
     public static void main(String[] args) {
 //        test1();
-        test2();
+//        test2();
 //        test3();
+        test4();
     }
+
+    private static void test4() {
+        ThreadLocal tl = new ThreadLocal();
+        final Thread[] starts = starts(tl);
+        sleep(2000);
+//        tl = null;
+        System.gc();
+        System.out.println("run gc");
+        sleep(5000);
+        for (Thread start : starts) {
+            try {
+                start.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.gc();
+        System.out.println("join finish");
+        sleep(2000);
+        System.out.println("finish");
+    }
+    static Thread[] starts(ThreadLocal tl){
+        Thread[] threads = new Thread[10];
+        for (int i = 0; i < threads.length; i++) {
+            int finalI = i;
+            threads[i] = new Thread(() -> {
+                tl.set(new Person("thread-" + finalI));
+                sleep(1000);
+                if (0 == finalI) { sleep(20000); }
+//                tl.remove();
+                System.out.println(tl.get());
+            });
+            threads[i].start();
+        }
+        return threads;
+    }
+    static class Person {
+        private String name;
+        public Person(String name) { this.name = name; }
+        public String toString() { return "Person{" + "name='" + name + '\'' + '}'; }
+        protected void finalize() throws Throwable {
+            System.out.println(System.currentTimeMillis() + " " + this.name + " person finalize");
+            super.finalize();
+        }
+    }
+
 
     private static void test3() {
         Thread thread = new Thread(() -> {
@@ -72,6 +119,14 @@ public class T08_ThreadLocal extends Func{
             tl.set("thread2");
         }).start();
 
+    }
+
+    public static void sleep(long tm) {
+        try {
+            Thread.sleep(tm);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

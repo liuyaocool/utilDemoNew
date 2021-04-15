@@ -14,14 +14,17 @@
 - man 2 read
 - man 2 socket
 
-## BIO
+## I/O
+
+### BIO
 
 - 同步阻塞
 - socket在这个时期是blocking
+- 开多线程 线程切换是有成本的
 
 <img src="linux\BIO.png" align="left">
 
-## NIO
+### NIO
 
 - 同步非阻塞
 - socket fd nonblock
@@ -31,7 +34,7 @@
 
 <img src="linux\NIO.png" align="left">
 
-## selector
+### selector
 
 - man 2 select
 - 多路复用 NIO
@@ -41,7 +44,7 @@
 
 <img src="linux\SELECTOR.png" align="left">
 
-## epoll
+### epoll
 
 - man epoll
 - eventpoll
@@ -118,9 +121,11 @@ yum makcache 出现 Failed to set locale, defaulting to C.UTF-8 错误
 - /home ：尽量设置大一点 保证系统崩溃后不丢数据
 - / ：剩余分区
 
-示例：
+## ubuntu示例
 
-- ubuntu 2020.10 60GB
+ubuntu 2020.10 60GB
+
+- 分区
   - /dev/sda1 efi                                 512MB
   - /dev/sda1 biosgrub                       512MB
   - /dev/sda1 ext4            /home        40960MB
@@ -319,6 +324,10 @@ https://www.laozuo.org/2912.html
 - dnf downgrade xxx    --回滚某个特定软件的版本
 
 # 网络
+
+- ss -lna
+- netstat -natp
+  - tp tcp
 
 ## 无线
 

@@ -38,10 +38,11 @@ exec 8<& - --关掉
 - 三次握手 四次分手
 
   ```
-  TCP三次握手 通信双方都要确认是否可通信
-      客户端 → 服务端: 我想连接
-      客户端 ← 服务端: 确认可以
-      客户端 → 服务端: 收到确认 (数据粘连: 同时发数据)
+  TCP三次握手 通信双方都要确认是否可通信 内核层次
+      客户端(SYN-SEND) 	    →(SYN) 	 	 服务端		    : 我想连接 
+      客户端 			   ←(SYN-ACK) 	服务端  		   : 确认可以 
+      客户端(ESABLISHED) 	→(ACK) 		 服务端(ESABLISHED): 收到确认 (数据粘连: 同时发数据) 
+      								SOCKET放入accept队列
   TCP数据传输
   TCP四次分手 socket资源-可有的端口
       客户端 → 服务端: 我想断开
@@ -119,7 +120,7 @@ exec 8<& - --关掉
 - ip地址 端到端
 - ping 192.168.11.11
 
-![](image\ping.png)
+<img src="image\ping.png" align="left">
 
 # tomcat
 

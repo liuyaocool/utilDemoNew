@@ -23,6 +23,8 @@ public class T06_Lock extends Func{
 //        testSemaphore();
 //        testExchanger();
         testLockSupport();
+
+        new ReentrantLock();
     }
 
     private static void test1(int times){

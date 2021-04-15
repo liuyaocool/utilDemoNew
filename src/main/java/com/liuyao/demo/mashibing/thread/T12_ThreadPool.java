@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 马士兵高并发八
@@ -24,34 +25,107 @@ public class T12_ThreadPool extends Func{
      */
     public static void main(String[] args) {
 
-        ScheduledExecutorService pool = Executors.newScheduledThreadPool(20);
-
-        for1:
-        for (;;) {
-
-            for (;;) {
-
-                break for1;
-            }
-        }
-//        ExecutorService executorService = Executors.newScheduledThreadPool();
+        ExecutorService executorService = Executors.newScheduledThreadPool(1);
 
 //        testFutureTask();
 //        testCollableFuture();
 //        testCompletableFuture();
 //        testSingleThreadPool();
 //        testFixedThreadPool();
-        testThreadPoolExecutor();
+//        testThreadPoolExecutor();
+//        testQueue();
+        testForkJoinPool();
+    }
+
+    private static void testQueue() {
+
+
+        final AtomicInteger count = new AtomicInteger();
+        final LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
+        final ThreadPoolExecutor poll = new ThreadPoolExecutor(
+                20, 20, 20, TimeUnit.SECONDS,
+                workQueue, new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "poll-thread" + count.getAndIncrement());
+            }
+        }, new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                throw new RuntimeException("poll queue full");
+            }
+        });
+        for (int i = 0; i < 10; i++) {
+            try {
+                int finalI = i;
+                workQueue.put(() -> {
+                    msleep(1000);
+                    System.out.println(Thread.currentThread().getName() + " → runnable " + finalI);
+                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < 20; i++) {
+            int finalI = i;
+            poll.execute(() -> {
+                System.out.println("first task " + finalI);
+            });
+        }
+
+        msleep(3000);
+        for (int i = 10; i < 20; i++) {
+            try {
+                int finalI = i;
+                workQueue.put(() -> {
+                    msleep(1000);
+                    System.out.println(Thread.currentThread().getName() + " → runnable " + finalI);
+                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     /**
      * 大任务分叉 然后汇总
      */
-    public void testForkJoinPool() {
+    public static void testForkJoinPool() {
         // 每个线程都有自己单独的队列(pop,push),当自己队列没有的时候,去其他队列偷(尾巴poll work steal)
         ExecutorService workStealingPool = Executors.newWorkStealingPool();
-
-
+        ForkJoinPool fjp = new ForkJoinPool();
+        AddTaskRet task = new AddTaskRet(0, nums.length);
+        fjp.execute(task);
+        long result = task.join();
+        System.out.println(result);
+    }
+    static int[] nums = new int[1000000];
+    static final int MAX_NUM = 50000;
+    static class AddTaskRet extends RecursiveTask<Long> {
+        private static final long serialVersionUID = 1L;
+        int start, end;
+        AddTaskRet(int s, int e) {
+            start = s;
+            end = e;
+        }
+        @Override
+        protected Long compute() {
+            if(end-start <= MAX_NUM) {
+                long sum = 0L;
+                for(int i=start; i<end; i++) sum += nums[i];
+                return sum;
+            }
+            int middle = start + (end-start)/2;
+            // 分叉
+            AddTaskRet subTask1 = new AddTaskRet(start, middle);
+            AddTaskRet subTask2 = new AddTaskRet(middle, end);
+            subTask1.fork();
+            subTask2.fork();
+            return subTask1.join() + subTask2.join();
+        }
     }
 
     static void testPaeallelStreamAPI(){

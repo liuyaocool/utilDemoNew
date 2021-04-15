@@ -12,7 +12,7 @@ sleep(); // 不释放锁
 
 # volatile
 
-禁止指令重排序 
+禁止指令重排序
 
 保证线程可见性
 
@@ -38,11 +38,11 @@ sleep(); // 不释放锁
 
 ### VarHandle
 
-jdk1.9+
-
-普通属性原子操作
-
-比反射快：反射会先做检查 VarHandle不需要
+- jdk1.9+
+- o 指向 对象 ，VarHandle 也指向对象的引用
+- 普通属性原子操作
+- 比反射快：反射会先做检查 VarHandle不需要 
+  - 直接操作二进制码
 
 ```java
 public class A {
@@ -66,10 +66,10 @@ public class A {
         handle.set(t,9);
         System.out.println(t.x);
 
-        handle.compareAndSet(t, 9, 10);
+        handle.compareAndSet(t, 9, 10); // 原子操作 t.x=10不是原子操作
         System.out.println(t.x);
 
-        handle.getAndAdd(t, 10);
+        handle.getAndAdd(t, 10);  // 原子操作 t.x+=10不是原子操作
         System.out.println(t.x);
     }
 }
@@ -84,7 +84,13 @@ AbstractQueuedSynchronizer.java (CLH)
 核心：
 
 	- volatile state 跟着一个队列Node
-	- Node { thread } 双向链表队列
+		ReentrantLock 抢到+1 重入+1
+		CountDownLatch 初始值设置
+	- Node { thread } 双向链表队列 监控state
+		state是0 拿到锁 
+		不是0进队列 AQS.acquireQueued()
+		双向是因为要考虑到前边节点状态，若取消 则跳过
+		永远是头节点 获得锁
 	- CAS 方式向队列加东西 （cas操作替代了锁整条链表）
 	- CAS 方式抢锁
 
@@ -92,7 +98,35 @@ AbstractQueuedSynchronizer.java (CLH)
 
 可重入锁
 
-1. 可调用自己的加锁方法
+1. 源码实现
+
+   ```
+   继承关系： xxxLock.Sync → AQS
+   state 抢锁用的 重入一次+1
+   
+   lock() → Sync.acquire() => AQS.acquire() → AQS.tryAcquire() => RL重写AQS的Sync.tryAcquire() → ...
+   
+   Sync.tryAcquire(1) {
+   	if (state == 0) { cas state=1 获得锁}
+   	else if( 是重入) { state++ }
+   }
+   AQS.acquire(1) {
+   	tryAcquire(1) 
+   	// Node.EXCLUSIVE 排他的队列
+   	acquireQueued(addWaiter(Node.EXCLUSIVE), 1)
+   	interrupt
+   }
+   AQS.addWaiter(node) {
+   	for(;;) { 多线程 cas node 加到Node队列尾巴 }
+   }
+   AQS.acquireQueued(node, 1) {
+   	if ishead && Sync.tryAcquire(1)  {}
+   	else park()
+   }
+   
+   ```
+
+2. 可调用自己的加锁方法
 
    ```java
    class A {
@@ -103,7 +137,7 @@ AbstractQueuedSynchronizer.java (CLH)
    }
    ```
 
-2. ReentrantLock
+3. ReentrantLock
 
    ```java
    // ture 公平锁-讲究先来后到
@@ -140,9 +174,9 @@ AbstractQueuedSynchronizer.java (CLH)
    }
    ```
 
-3. ReentrantLock condition
+4. ReentrantLock condition
 
-   本质是不同的等待队列
+   **本质是不同的等待队列**
 
    ```java
    ReentrantLock lock = new ReentrantLock(); 
@@ -374,6 +408,12 @@ public static void main(String[] args) {
 
 用途： 声明式事务 保证同一个connection
 
+源码解读
+
+```
+
+```
+
 # 引用类型
 
 ## finalize()
@@ -564,6 +604,7 @@ take();
   - 插慢 读快 底层CAS
   - HashTable(全是synchronized锁) → Collections.synchronizedMap(new HashMap()) (全是synchronized锁) → ConsurrentHashMap (新的锁CAS)
 - ConcurrentSkipListMap：跳表
+- 
 
 # ThreadPool
 
