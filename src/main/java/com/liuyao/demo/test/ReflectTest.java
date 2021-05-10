@@ -94,6 +94,16 @@ public class ReflectTest {
             hero.setAge(11);
             System.out.println(hero.getClass() == clazz);
 
+            System.out.println("============================ 反射拿值 +++++++++++====================================================");
+
+            Class clz = hero.getClass();
+            final Field age = clz.getDeclaredField("age");
+            age.setAccessible(true);
+            final Integer o = (Integer) age.get(hero);
+            System.out.println(o);
+
+
+            System.out.println("============================结束+++++++++++====================================================");
 
         }catch (ReflectiveOperationException e){
 
