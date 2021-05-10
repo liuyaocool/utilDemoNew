@@ -7,8 +7,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.tomcat.util.http.MimeHeaders;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -295,5 +298,19 @@ public class HttpUtils {
     }
 
 
+    public static void printHeaders(HttpServletRequest request) {
+        try {
+            Enumeration<String> headers = request.getHeaderNames();
+            Class<? extends Enumeration> clz = headers.getClass();
+            Field h1 = clz.getDeclaredField("headers");
+            h1.setAccessible(true);
+            final MimeHeaders o = (MimeHeaders) h1.get(headers);
+            for (int i = 0; i < o.size(); i++) {
+                System.out.println(o.getName(i) + ": " + o.getValue(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
