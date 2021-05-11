@@ -516,14 +516,35 @@ fi
   - tar -zxvf *.tar.gz
 - 压缩：tar -zcvf ***.tar.gz /folder
 
-## 查看系统版本
+## 查看系统
 
-- 系统：
-  - redhat系列：cat /etc/redhat-release
-- 内核：
-  - cat /proc/version
-  - uname -r    --显示内核版本
-    - -a    --显示主机名 内核版本 硬件平台等
+https://blog.csdn.net/qq_31278903/article/details/83146031
+
+### 系统
+
+- redhat系列：cat /etc/redhat-release
+
+### 内核
+
+- cat /proc/version
+- uname -r    --显示内核版本
+  - -a    --显示主机名 内核版本 硬件平台等
+
+### CPU
+
+- cat /proc/cpuinfo
+- lscpu
+
+### 磁盘
+
+- lsblk
+- fdisk -l
+- df -k
+  - -h
+
+### 主机名称
+
+hostname
 
 ## 其他查看
 
