@@ -1,29 +1,30 @@
-# Fusion
+# Fusion 12
 
 ## 修改nat模式网段
 
-sudo su
-1
-修改虚拟网卡编辑器配置文件
-备份配置文件
+1. sudo su
 
-cd /Library/Preferences/VMware\ Fusion/
-cp networking networking.bak
-1
-2
-修改配置文件
+2. cd /Library/Preferences/VMware\ Fusion/
 
-answer VNET_8_HOSTONLY_SUBNET 10.0.0.0
+3. cp networking networking.bak
 
-修改网卡配置文件
-cd /Library/Preferences/VMware\ Fusion/vmnet8/
-cp nat.conf nat.conf.bak
-vim nat.conf
-1
-2
-3
-修改# NAT gateway address下ip和netmask参数
+4. vi networking 修改
 
-# NAT gateway address
-ip = 10.0.0.254
-netmask = 255.255.255.0
+   ```
+   answer VNET_8_HOSTONLY_NETMASK 255.255.255.0
+   answer VNET_8_HOSTONLY_SUBNET 192.168.61.0
+   ```
+
+5. cd vmnet8 
+
+6. cp nat.conf nat.conf.bak
+
+7. vi nat.conf 修改
+
+   ```
+   # NAT gateway address
+   ip = 192.168.61.1
+   netmask = 255.255.255.0
+   ```
+
+   
