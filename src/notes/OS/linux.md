@@ -63,6 +63,8 @@
 
 # 公钥私钥免密登录
 
+## linux
+
 - 1 客户机执行命令 ssh-keygen -t rsa -P "",  一路回车
   - 会在 ~/.ssh 中生成一对密钥
 - 2 客户机执行命令ssh-copy-id 用户名@ip, 输入密码
@@ -140,6 +142,32 @@ ubuntu 2020.10 60GB
 # yum
 
 包管理器
+
+## 基本操作
+
+- 查找软件包：yum search php
+- 卸载yum包装：yum remove PACKAGE_NAME
+- 列出所有可安装的软件包：yum list php
+- 列出所有可更新的软件包：yum list updates 
+- 列出所有已安装的软件包：yum list installed
+- 列出所有已安装但不在 Yum Repository 内的软件包：yum list extras 
+- 列出所指定的软件包：yum list +包名
+- 使用YUM获取软件包信息、显示yum包的信息：yum info PACKAGE_NAME
+- 搜索yum包：yum search PACKAGE_NAME
+- 列出所有可更新的软件包信息：yum info updates 
+- 列出所有已安装的软件包信息：yum info installed 
+- 列出所有已安装但不在 Yum Repository 内的软件包信息：yum info extras
+- 列出软件包提供哪些文件：yum provides
+- 更新具体的yum包：yum update PACKAGE_NAME
+- 显示已启用的yum存储库的列表：yum repolist
+- 清除yum缓存：yum clean all
+- 找出哪个yum包提供了一个特定的文件（例如：/usr/bin/nc)）：yum whatprovides "*bin/nc"
+- 取出yum包装：yum downloader PACKAGE_NAME
+- 重新安装一个yum包：yum reinstall PACKAGE_NAME
+
+
+
+## 报错
 
 yum install 报错 failed to download metadata for repo 'AppStream'
 

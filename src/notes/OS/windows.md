@@ -1,6 +1,16 @@
 # 通用
 
 - 注册表: regedit
+- 服务：services.msc
+- 配置管理：gpedit.msc
+
+# win10 关闭自动更新
+
+1. win+r -> 输入 services.msc
+2. “常规”中禁用，“恢复”中将第一次失败改为“误操作”，应用
+3. win+r -> 输入 gpedit.msc
+4. 计算机配置 -> 管理模板 → Windows 组件 → Windows 更新 
+5. 找到配置自动更新，将其禁用
 
 # XP
 
