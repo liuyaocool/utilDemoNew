@@ -378,7 +378,32 @@ https://www.laozuo.org/2912.html
   - vi /etc/hostname --centos7之后只需修改这里
     - lynode01.com
 
+## 修改网络连接方式
 
+```
+vim /etc/sysconfig/network-scripts/ifcfg-*
+ONBOOT=yes // 网卡是否启用
+BOOTPROTO=dhcp // 动态 static-静态
+#IPADDR=192.168.1.160
+#NETMASK=255.255.255.0
+#GATEWAY=192.168.1.1
+#DNS1=114.114.114.114
+#DNS2=8.8.8.8
+#PREFIX=24
+
+重新获得ip:
+dhclient
+ifdown ens33
+ifup ens33
+无效 ifconfig ens33 down \ ifconfig ens33 up
+
+重启网卡
+1: nmcli c reload
+2: 三选一
+	nmcli c up ens33
+	nmcli d reapply ens33
+	nmcli d connect ens33
+```
 
 
 

@@ -91,28 +91,6 @@
         linux内核中虚拟的一张 优先级高于物理网卡(如eth0)-就近原则
         任何能匹配到此网卡(网关与运算)的包 都不会向计算机外部发 会直接返回应用层程序
     修改hosts文件 → vi /etc/hosts
-    修改连接网络方式
-        vim /etc/sysconfig/network-scripts/ifcfg-*
-            ONBOOT=yes // 网卡是否启用
-            BOOTPROTO=dhcp // 动态 static-静态
-            #IPADDR=192.168.1.160
-            #NETMASK=255.255.255.0
-            #GATEWAY=192.168.1.1
-            #DNS1=114.114.114.114
-            #DNS2=8.8.8.8
-            #PREFIX=24
-    重新获得ip:
-        dhclient
-        ifdown ens33
-        ifup ens33
-
-        无效 ifconfig ens33 down \ ifconfig ens33 up
-    重启网卡
-        1: nmcli c reload
-        2: 三选一
-            nmcli c up ens33
-            nmcli d reapply ens33
-            nmcli d connect ens33
 
 
     <h2 class="anchor">命令</h2>

@@ -2,9 +2,31 @@ package com.liuyao.demo.test;
 
 import com.liuyao.demo.entity.Hero;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Test {
 
     public static void main(String[] args) {
+
+        Executors.newCachedThreadPool();
+
+
+        AtomicInteger v = new AtomicInteger();
+        char[] str = "ABC".toCharArray();
+        for (int i = 0; i < str.length; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                try {
+                    if (finalI == 0) Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                while (finalI > v.get()) {}
+                System.out.println(str[finalI]);
+                v.getAndIncrement();
+            }).start();
+        }
 
 //        System.out.println(new Double("12.1").intValue());
 //        System.out.println(new Double("12.1").toString());

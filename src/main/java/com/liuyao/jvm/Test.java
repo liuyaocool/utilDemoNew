@@ -1,4 +1,4 @@
-package com.liuyao.spring;
+package com.liuyao.jvm;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

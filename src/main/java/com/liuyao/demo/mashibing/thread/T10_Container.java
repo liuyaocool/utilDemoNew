@@ -1,5 +1,6 @@
 package com.liuyao.demo.mashibing.thread;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -44,6 +45,11 @@ public class T10_Container {
 
     public static void main(String[] args) {
 
+        print("aaaccvfgafgADFfagfg");
+
+        System.out.println((int )'a');
+        System.out.println((int )'A');
+
         LinkedBlockingQueue<Object> objects = new LinkedBlockingQueue<>();
         ArrayBlockingQueue arrayBlockingQueue = new ArrayBlockingQueue<>(20);
         ConcurrentLinkedQueue<Object> objects1 = new ConcurrentLinkedQueue<>();
@@ -51,6 +57,21 @@ public class T10_Container {
 
         // 消费过后继续执行
         testLinkedTransferQueue();
+    }
+
+    static void print(String str){
+        TreeMap<Character, Integer> map = new TreeMap<>();
+        for (char s: str.toCharArray()){
+            if (! map.containsKey(s)){
+                map.put(s, 1);
+                continue;
+            }
+            map.put(s, map.get(s)+1);
+        }
+        for (char s: map.keySet()){
+            System.out.print(s);
+            System.out.print("(" + map.get(s) + ")");
+        }
     }
 
     /**

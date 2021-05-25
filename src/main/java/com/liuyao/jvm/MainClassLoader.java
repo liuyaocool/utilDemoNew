@@ -1,7 +1,6 @@
 package com.liuyao.jvm;
 
 import com.liuyao.demo.utils.IOUtil;
-import com.liuyao.spring.Test;
 
 import java.io.*;
 
@@ -36,7 +35,7 @@ public class MainClassLoader {
         ClassLoader l = new EncryLoader();
         Class clazz = null;
         try {
-            clazz = l.loadClass("com.liuyao.spring.Test");
+            clazz = l.loadClass("com.liuyao.jvm.Test");
             Test h = (Test)clazz.newInstance();
             h.m();
         } catch (ClassNotFoundException e) {
@@ -54,7 +53,7 @@ public class MainClassLoader {
     private static void myLoader() {
         Class<?> aClass = null;
         try {
-            aClass = new MyLoader().loadClass("com.liuyao.spring.Test");
+            aClass = new MyLoader().loadClass("com.liuyao.jvm.Test");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -65,7 +64,7 @@ public class MainClassLoader {
 
     private static void loadClass() {
         try {
-            Class<?> aClass = MainClassLoader.class.getClassLoader().loadClass("com.liuyao.spring.Test");
+            Class<?> aClass = MainClassLoader.class.getClassLoader().loadClass("com.liuyao.jvm.Test");
             System.out.println(aClass.getName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
