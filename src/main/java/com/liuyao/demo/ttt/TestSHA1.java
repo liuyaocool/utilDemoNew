@@ -3,6 +3,8 @@ package com.liuyao.demo.ttt;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +24,16 @@ public class TestSHA1 {
     static String secretKey = "MNzikcenxQZ1GcW89tTmsEG8BZHyeq&";
 
     public static void main(String[] args) {
+
+        String bbb = "images/aaa/bbb.png";
+        System.out.println(bbb.substring(bbb.indexOf("/")+1));
+        String ccc = "images/ccc.png";
+        System.out.println(ccc.substring(ccc.indexOf("/")+1));
+
+        System.out.println(URLEncoder.encode("&x=x-x:x."));
+        System.out.println(URLDecoder.decode("%2F"));
+        System.out.println(URLDecoder.decode("%253A"));
+        System.out.println(URLDecoder.decode("%3A"));
         final String asdfg = "asdfg";
 
         byte[] cast = new byte[asdfg.length()];
