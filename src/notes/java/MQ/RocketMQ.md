@@ -99,11 +99,9 @@ producer.setNamesrvAddr("192.168.150.113:9876");
 producer.start();
 ```
 
-**同步消息**
+**同步发送**
 
 ```java
-
-
 Message msg1 = new Message("myTopic001", "xxxxooo 1".getBytes());
 Message msg2 = new Message("myTopic001", "xxxxooo 2".getBytes());
 Message msg3 = new Message("myTopic001", "xxxxooo 3".getBytes());
@@ -119,7 +117,7 @@ SendResult sendResult3 = producer.send(list);
 producer.shutdown();
 ```
 
-**异步消息**
+**异步发送**
 
 ```java
 Message msg0 = new Message("myTopic001", "xxxxooo 0".getBytes());
@@ -157,18 +155,7 @@ producer.sendOneway(message);
 DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("xxoocsm");		
 consumer.setNamesrvAddr("192.168.150.113:9876");
 
-/**
-		 * a()
-		 * c()
-		 * d()
-		 * b -> Ïò rocketmq Ð´ÈëÒ»ÌõÏûÏ¢()
-		 * rollback()
-		 * 
-		 * 
-		 * 
-		 */
-
-// Ã¿¸öconsumer ¹Ø×¢Ò»¸ötopic
+// 每个消费者只关注一个主题
 
 // topic 关注的消息主题
 // 过滤器 * 表示不过滤
@@ -185,18 +172,69 @@ consumer.registerMessageListener(new MessageListenerConcurrently() {
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
 });
-// 集群（默认），一组consumer 
-// 广播，消息发送给所有 订阅了此主题的consumer
+// 集群（CLUSTERING 默认），一组consumer 
+// 广播（BROADCASTING），消息发送给所有 订阅了此主题的consumer
 consumer.setMessageModel(MessageModel.CLUSTERING);
 consumer.start();
-
-// ¼¯Èº -> Ò»×éconsumer
-// ¹ã²¥
 ```
 
+### 集群消费模式  点对点
 
+指**集群化部署消费者**，MQ 认为任意一条消息只需要被集群内的任意一个消费者处理即可。
 
+- 每条消息只需要被处理一次，broker只会把消息发送给消费集群中的一个消费者
+- 在消息重投时，不能保证路由到同一台机器上
+- 消费状态（进度）由broker维护，**ack**
 
+### 广播消费模式  一对多
+
+当使用广播消费模式时，MQ 会将每条消息推送给集群内所有注册过的客户端，保证消息至少被每台机器消费一次。
+
+- 消费进度由consumer维护
+
+- 保证每个消费者消费一次消息
+
+- 消费失败的消息不会重投，broker不会关注消费状态（进度）
+
+### 注意
+
+1. 不要两种模式共用
+2. tag selector 在一个group中的消费者，不能随便变，要保持统一
+
+## TAG
+
+消息过滤 消息分组
+
+```java
+Message message = new Message("myTopic003", "TAG-B", "xxooxx".getBytes());
+```
+
+## KEY
+
+找消息的 运维使用
+
+```java
+Message message = new Message("myTopic003", "TAG-B", "KEY-xx", "xxooxx".getBytes());
+```
+
+## selector-sql
+
+**producer**
+
+```java
+for (int i = 1; i <= 100; i++) {			
+    Message message = new Message("myTopic003", "TAG-B", "KEY-xx", ("xxooxx:" + i ).getBytes());
+    message.putUserProperty("age", String.valueOf(i));
+    producer.send(message);
+}
+```
+
+**consumer**
+
+```java
+MessageSelector messageSelector = MessageSelector.bySql("age >= 18 and age <= 28");
+consumer.subscribe("myTopic003",messageSelector );
+```
 
 
 
@@ -206,4 +244,4 @@ consumer.start();
 
 # 进度
 
-第二节 1:29:00 消费模式
+第3节 0:00:00
